@@ -1,0 +1,96 @@
+/* 1. RESET DASAR */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+body { background-color: #fafafa; color: #111827; } /* Latar belakang menggunakan standar sebelumnya */
+
+/* 2. NAVBAR */
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fafafa; }
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.logo-img { height: 30px; width: auto; }
+.nav-logo h2 { font-size: 20px; font-weight: 900; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links a { text-decoration: none; color: #4b5563; font-size: 14px; font-weight: 600; }
+.cart-badge { background-color: #f3f4f6; padding: 8px 16px; border-radius: 20px; color: #111827 !important; }
+
+/* 3. TATA LETAK UTAMA (KIRI & KANAN) */
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 50px 80px 50px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr; /* Membagi dua kolom */
+    gap: 60px;
+}
+
+/* 4. KOLOM KIRI (Formulir) */
+.breadcrumbs { font-size: 12px; color: #6b7280; margin-bottom: 20px; }
+.breadcrumbs a { color: #4b5563; text-decoration: none; }
+.page-title { margin-bottom: 40px; }
+.page-title h1 { font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+.page-title p { color: #6b7280; font-size: 14px; }
+
+.checkout-section { margin-bottom: 40px; }
+.section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 24px; }
+.step-number { background-color: #facc15; color: #111827; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; }
+.section-header h2 { font-size: 20px; font-weight: 800; }
+
+/* Formulir Input */
+.form-group { display: flex; flex-direction: column; margin-bottom: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group label { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.form-group input { padding: 14px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; outline: none; }
+.form-group input:focus { border-color: #facc15; }
+
+/* Pilihan Pengiriman & Bank */
+.radio-card { display: flex; justify-content: space-between; align-items: center; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
+.active-card { border: 2px solid #facc15; background-color: #fefce8; }
+.radio-left { display: flex; align-items: center; gap: 15px; }
+.radio-left h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.radio-left p { font-size: 13px; color: #6b7280; }
+.price-bold { font-weight: 800; }
+
+/* Pembayaran Tabs */
+.payment-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.tab-btn { flex: 1; padding: 14px; border: 1px solid #e5e7eb; border-radius: 25px; background: white; font-weight: 700; cursor: pointer; }
+.active-tab { border: 2px solid #facc15; background-color: #fefce8; }
+
+.payment-box { background-color: white; padding: 30px; border-radius: 16px; border: 1px solid #e5e7eb; }
+.payment-box h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.subtitle { font-size: 12px; color: #6b7280; margin-bottom: 24px; }
+
+.bank-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; cursor: pointer; }
+.bank-info { display: flex; align-items: center; gap: 15px; font-weight: 700; font-size: 15px; }
+.bank-logo { width: 40px; height: 40px; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: bold; }
+.bg-blue { background-color: #0066AE; }
+.bg-blue-dark { background-color: #0F3F8F; }
+.bg-yellow { background-color: #F2A900; }
+.bg-orange { background-color: #E55300; }
+
+/* Tombol Pesan */
+.btn-pesan { width: 200px; background-color: #facc15; color: #111827; padding: 16px; border: none; border-radius: 25px; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 20px; margin-bottom: 12px; }
+.terms-text { font-size: 11px; color: #9ca3af; }
+
+/* 5. KOLOM KANAN (Order Summary) */
+.order-card { background-color: white; padding: 30px; border-radius: 16px; border: 1px solid #e5e7eb; position: sticky; top: 20px; }
+.order-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 24px; }
+
+.order-items { margin-bottom: 24px; }
+.order-item { display: flex; gap: 15px; margin-bottom: 16px; }
+.item-img { width: 50px; height: 60px; object-fit: cover; border-radius: 8px; background-color: #f3f4f6; }
+.item-details h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.item-details p { font-size: 12px; color: #6b7280; margin-bottom: 6px; }
+
+.order-calculations { border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 20px 0; margin-bottom: 20px; }
+.calc-row { display: flex; justify-content: space-between; font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+.total-row { margin-top: 20px; margin-bottom: 0; color: #111827; font-weight: 800; font-size: 16px; align-items: center; }
+.total-price { font-size: 20px; font-weight: 900; }
+
+.promo-box { display: flex; gap: 10px; margin-bottom: 24px; }
+.promo-box input { flex: 1; padding: 12px 16px; border: 1px solid #e5e7eb; border-radius: 25px; font-size: 13px; outline: none; background-color: #f9fafb; }
+.promo-box button { padding: 12px 24px; background-color: #e5e7eb; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; }
+
+.secure-badge { text-align: center; font-size: 10px; font-weight: 800; color: #9ca3af; letter-spacing: 1px; }
+
+/* 6. FOOTER */
+.checkout-footer { display: flex; justify-content: space-between; padding: 30px 50px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
+.footer-right { display: flex; gap: 20px; }
+.footer-right a { color: #6b7280; text-decoration: none; }

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmoni - Katalog Produk</title>
+    <link rel="stylesheet" href="../css/katalog.css">
+    <style>
+        .no-results {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        .product-card { cursor: pointer; transition: transform .2s, box-shadow .2s; }
+        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+        .nav-search input { width: 100%; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo" style="cursor: pointer;" onclick="window.location.href='homepage.html'">
+            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
+            <h2>HARMONI</h2>
+        </div>
+        <div class="nav-search">
+            <input type="text" id="navSearch" placeholder="Cari kesukaanmu..." onkeydown="handleNavSearch(event)" oninput="handleSearchInput()">
+        </div>
+        <div class="nav-actions">
+            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
+            <div class="profile-avatar" style="cursor:pointer;" onclick="window.location.href='homepage.html'">
+                <img src="../image/profile.png" alt="profil">
+            </div>
+        </div>
+    </nav>
+
+    <div class="catalog-container">
+
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h3>KATEGORI</h3>
+                <label class="filter-item">
+                    <input type="checkbox" value="crunchy" id="cb-crunchy" onchange="applyFilters()">
+                    <span id="text-crunchy" class="category-text">Crunchy</span>
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox" value="chewy" id="cb-chewy" onchange="applyFilters()">
+                    <span id="text-chewy" class="category-text">Chewy</span>
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox" value="original" id="cb-original" onchange="applyFilters()">
+                    <span id="text-original" class="category-text">Original</span>
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <h3>RENTANG HARGA</h3>
+                <div class="price-range">
+                    <span>Rp 0</span>
+                    <span>Rp 100.000</span>
+                </div>
+                <hr class="divider-line">
+            </div>
+
+            <div class="filter-group">
+                <h3>CUSTOMER RATING</h3>
+                <p class="rating-filter">⭐⭐⭐⭐⭐ &amp; Up</p>
+            </div>
+
+            <div class="filter-group">
+                <h3>POPULARITAS</h3>
+                <div class="tags-container">
+                    <span class="tag active-tag" onclick="selectTag(this, 'terlaris')">Terlaris</span>
+                    <span class="tag" onclick="selectTag(this, 'terbaru')">Terbaru</span>
+                    <span class="tag" onclick="selectTag(this, 'terbatas')">Terbatas</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="product-area">
+            <div class="product-header">
+                <p id="resultCount">Menampilkan semua produk</p>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                <!-- Data produk akan dimuat secara dinamis dari database -->
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn">&lt;</button>
+                <button class="page-btn active-page">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <span class="page-dots">...</span>
+                <button class="page-btn">8</button>
+                <button class="page-btn">&gt;</button>
+            </div>
+        </main>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>© 2024 HARMONI. All rights reserved. Pusat Oleh-oleh Jember.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentSort = 'terlaris';
+
+        // Read URL params on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+
+            // Pre-fill search from URL
+            const q = params.get('q');
+            if (q) document.getElementById('navSearch').value = q;
+
+            // Pre-select category from URL
+            const kat = params.get('kategori');
+            if (kat) {
+                const cb = document.getElementById('cb-' + kat);
+                if (cb) {
+                    cb.checked = true;
+                    document.getElementById('text-' + kat).classList.add('active-category');
+                }
+            }
+
+            // Pre-select sort from URL
+            const sort = params.get('sort');
+            if (sort) {
+                currentSort = sort;
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active-tag'));
+                document.querySelectorAll('.tag').forEach(t => {
+                    if (t.textContent.toLowerCase().includes(sort.substring(0,5))) {
+                        t.classList.add('active-tag');
+                    }
+                });
+            }
+
+            // Fetch produk dari database
+            fetch('../get_produk.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.error) {
+                        renderProducts(data);
+                    } else {
+                        console.error(data.error);
+                    }
+                    applyFilters();
+                })
+                .catch(err => {
+                    console.error('Gagal mengambil data produk', err);
+                    applyFilters();
+                });
+
+            // Cart count
+            const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+        });
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = ''; // Bersihkan loading text
+            
+            products.forEach(p => {
+                const cat = (p.nama_kategori || '').toLowerCase();
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.dataset.category = cat;
+                card.dataset.sales = p.terjual || 0;
+                card.dataset.date = p.tanggal_ditambahkan || '';
+                card.dataset.name = p.nama_produk;
+                
+                // Asumsi goToDetail mengarah ke halaman detail
+                card.onclick = () => window.location.href = 'detail_produk.html?id=' + p.id_produk;
+
+                let badgeHTML = '';
+                if (p.terjual > 500) {
+                    badgeHTML = '<span class="badge badge-yellow">BEST SELLER</span>';
+                } else if (cat === 'original') {
+                    badgeHTML = '<span class="badge badge-green">ORGANIC</span>';
+                }
+
+                card.innerHTML = `
+                    <div class="card-img-wrapper">
+                        <img src="${p.url_gambar}" alt="${p.nama_produk}">
+                        ${badgeHTML}
+                    </div>
+                    <h4>${p.nama_produk}</h4>
+                    <p class="reviews">⭐⭐⭐⭐⭐ (Data Statis)</p>
+                    <p class="price">Rp ${parseFloat(p.harga).toLocaleString('id-ID')}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleNavSearch(e) {
+            if (e.key === 'Enter') applyFilters();
+        }
+
+        function handleSearchInput() {
+            applyFilters();
+        }
+
+        function selectTag(el, sort) {
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active-tag'));
+            el.classList.add('active-tag');
+            currentSort = sort;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const grid = document.getElementById('productGrid');
+            const cards = Array.from(grid.getElementsByClassName('product-card'));
+            const checkedCats = Array.from(document.querySelectorAll('.filter-item input:checked')).map(c => c.value);
+            const searchQ = (document.getElementById('navSearch').value || '').toLowerCase().trim();
+
+            // Update checkbox color
+            ['crunchy','chewy','original'].forEach(cat => {
+                const cb = document.getElementById('cb-' + cat);
+                const span = document.getElementById('text-' + cat);
+                if (cb && cb.checked) span.classList.add('active-category');
+                else if (span) span.classList.remove('active-category');
+            });
+
+            let visible = [];
+            cards.forEach(card => {
+                const cat = card.dataset.category;
+                const name = (card.dataset.name || '').toLowerCase();
+                const catOk = checkedCats.length === 0 || checkedCats.includes(cat);
+                const searchOk = !searchQ || name.includes(searchQ) || cat.includes(searchQ);
+                if (catOk && searchOk) {
+                    card.style.display = 'block';
+                    visible.push(card);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Sort
+            if (currentSort === 'terlaris') {
+                visible.sort((a, b) => +b.dataset.sales - +a.dataset.sales);
+            } else if (currentSort === 'terbaru') {
+                visible.sort((a, b) => b.dataset.date.localeCompare(a.dataset.date));
+            } else if (currentSort === 'terbatas') {
+                visible.sort((a, b) => +a.dataset.sales - +b.dataset.sales);
+            }
+
+            visible.forEach(c => grid.appendChild(c));
+
+            // No results message
+            let noRes = document.getElementById('noResults');
+            if (visible.length === 0) {
+                if (!noRes) {
+                    noRes = document.createElement('div');
+                    noRes.id = 'noResults';
+                    noRes.className = 'no-results';
+                    noRes.textContent = 'Tidak ada produk yang sesuai filter.';
+                    grid.appendChild(noRes);
+                }
+            } else {
+                if (noRes) noRes.remove();
+            }
+
+            document.getElementById('resultCount').textContent =
+                'Menampilkan ' + visible.length + ' produk';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #fafafa; /* Warna latar belakang halaman keseluruhan yang sedikit off-white */
+    color: #333;
+}
+
+/* =========================================
+   1. PENGATURAN NAVBAR (Navigasi Atas)
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between  ; /* Mendorong logo ke kiri, search ke tengah, profil ke kanan */
+    align-items: center; /* Memastikan semuanya sejajar lurus di tengah secara vertikal */
+    padding: 15px 50px;
+    background-color: #ffffff;
+}
+
+/* Logo */
+.nav-logo {
+    font-weight: bold;
+    display: flex;
+    align-items: center; /* Membuat gambar dan teks sejajar lurus secara vertikal */
+    gap: 0px; /* Memberikan jarak sedikit antara gambar dan teks "HARMONI" */
+}
+
+.logo-img {
+    height: 35px; /* Mengatur tinggi logo agar pas dan proporsional dengan Navbar */
+    width: auto;
+}
+
+.nav-logo h2 {
+    font-family:sans-serif ;
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0; /* Memastikan tidak ada jarak kosong bawaan dari tag H2 */
+}
+
+/* Kolom Pencarian */
+.nav-search input {
+    width: 350px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px; /* Membuat ujung kolom pencarian bulat (pill shape) */
+    background-color: #f3f4f6;
+    font-size: 13px;
+    outline: none;
+}
+
+/* Tombol Kanan (Keranjang & Profil) */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.btn-cart {
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+.btn-cart:hover {
+    text-decoration: underline;
+}
+
+.profile-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Membuat kotak menjadi lingkaran sempurna */
+    background-color: #0c58cb; /* Warna abu-abu sementara untuk foto profil */
+    overflow: hidden; /*memastikan foto rapih didalam lingkaran */
+}
+
+.profile-avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* =========================================
+   2. PENGATURAN HERO SECTION (Gambar Utama)
+   ========================================= */
+.hero-section {
+    /* Memberikan jarak dari pinggir layar dan membuat sudutnya melengkung */
+    margin: 20px 50px;
+    height: 450px;
+    border-radius: 24px;
+    
+    /* Mengatur Gambar Latar & Efek Gelap (Overlay) */
+    background-image: 
+        /* Overlay gelap agar teks putih bisa terbaca jelas */
+        linear-gradient(rgba(0, 0, 0, 0.662), rgba(0, 0, 0, 0.4)),
+        /* GANTI NAMA FILE INI DENGAN GAMBAR PANTAI/PEMANDANGAN ANDA NANTI */
+        url('../image/home-rak.png'); 
+        
+    background-size: cover;
+    background-position: center;
+    
+    /* Membawa teks ke tengah-tengah gambar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 650px; /* Membatasi lebar teks agar tidak terlalu memanjang ke samping */
+    color: #ffffff; /* Semua teks di dalam sini berwarna putih */
+}
+
+/* Label Kuning Kecil */
+.badge {
+    background-color: #facc15;
+    color: #111827;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+/* Judul Besar */
+.hero-content h1 {
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* Teks Deskripsi Harmoni*/
+.hero-content p {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: rgb(255, 255, 255);
+    
+    
+}
+
+/* Tombol-tombol di Hero */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+.btn-yellow {
+    background-color: #facc15;
+    color: #111827;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.btn-yellow:hover{ /* animasi gelap saat hover */
+    background-color: #eab308; 
+}
+
+.btn-outline {
+    background-color: rgba(255, 255, 255, 0.15); /* Putih transparan */
+    color: #ffffff;
+    padding: 12px 32px;
+    border: 1px solid #ffffff; /* Garis pinggir putih */
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+    backdrop-filter: blur(4px); /* Efek kaca blur (glassmorphism) */
+}
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.066);
+}
+
+/* =========================================
+   3. PENGATURAN KATEGORI
+   ========================================= */
+.category-section {
+    margin: 60px 50px; /* Jarak dari Hero Section ke bawah */
+}
+
+/* Bagian Judul & Tombol See All */
+.category-header {
+    display: flex;
+    justify-content: space-between; /* Judul ke kiri, tombol ke kanan */
+    align-items: flex-end; /* Memastikan bawah teks sejajar */
+    margin-bottom: 30px;
+}
+.category-title h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 5px;
+}
+.category-title p {
+    font-size: 20px;
+    color: #6b7280;
+}
+.see-all {
+    font-size: 14px;
+    font-weight: 700;
+    color: #facc15; /* Warna kuning khas Anda */
+    text-decoration: none;
+    transition: 0.3s;
+}
+.see-all:hover {
+    color: #ca8a04;
+    text-decoration: underline;
+}
+
+/* KOTAK GRID: Rahasia membagi 3 kolom sama rata */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 kolom, ukuran 1 fraction (sama besar) */
+    gap: 30px; /* Jarak antar kartu */
+}
+
+/* =========================================
+   DESAIN KARTU KATEGORI ALA MAKO
+   ========================================= */
+
+.category-card {
+    background-color: #fcfcf5; /* Kotak dasar warna putih */
+    border-radius: 16px;
+    overflow: hidden; /* Memastikan sudut gambar ikut melengkung dan tidak keluar batas */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05); /* Bayangan sangat halus agar terkesan timbul */
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.1s ease-out ; /* Animasi pelan saat kartu terangkat */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Efek saat seluruh kartu di-hover (kartu sedikit naik) */
+.category-card:hover {
+    transform: translateY(-8px); 
+}
+
+/* Wadah Gambar di Bagian Atas */
+.card-image-wrapper {
+    width: 100%;
+    height: 250px; 
+    overflow: hidden;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease; /* Animasi pelan untuk gambar */
+}
+
+/* Efek saat di-hover: Gambar sedikit membesar (Zoom in) */
+.category-card:hover .card-image-wrapper img {
+    transform: scale(1.05);
+}
+
+/* Kotak Putih Teks di Bagian Bawah */
+.card-content {
+    padding: 24px;
+    background-color: #ffffff;
+    transition: background-color 0.4s ease; /* Animasi perubahan warna kotak secara halus */
+    flex-grow: 1; 
+}
+
+.card-content h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 8px;
+    transition: color 0.1s ease-out; /* Animasi perubahan warna teks */
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    transition: color 0.1s ease-out; /* Animasi perubahan warna teks */
+}
+
+/* =========================================
+   EFEK HOVER: KOTAK BERUBAH WARNA
+   ========================================= */
+/* 1. Latar belakang kotak putih berubah jadi kuning gelap */
+.category-card:hover .card-content {
+    background-color: #eab308    ; 
+}
+
+/* 2. Teks yang tadinya gelap/abu-abu berubah jadi putih agar kontras dan terbaca */
+.category-card:hover .card-content h3,
+.category-card:hover .card-content p {
+    color: #fcfcf5; 
+}   
+
+
+
+/* =========================================
+   4. PENGATURAN TESTIMONI
+   ========================================= */
+.testimonial-section {
+    background-color: #fcfcf5; /* Warna krem sangat muda mirip desain */
+    margin: 60px 50px;
+    padding: 60px 50px;
+    border-radius: 24px;
+    text-align: center;
+}
+
+.testi-header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.stars {
+    font-size: 18px;
+    letter-spacing: 4px; /* Memberi jarak antar bintang */
+    margin-bottom: 40px;
+}
+
+/* KOTAK GRID: Membagi 3 kolom */
+.testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* Desain Kartu Putih */
+.testi-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Mendorong foto profil ke bawah jika teks ulasannya pendek */
+}
+
+.testi-card p {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Bagian Foto Profil & Nama di dalam Testimoni */
+.testi-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testi-user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info h4 {
+    font-size: 14px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 2px;
+}
+
+.user-info span {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+
+/* =========================================
+   5. PENGATURAN KOTAK LANGGANAN
+   ========================================= */
+.subscription-section {
+    background-color: #0f172a; /* Warna biru sangat gelap hampir hitam */
+    color: #ffffff;
+    margin: 60px 50px;
+    padding: 50px;
+    border-radius: 24px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px; /* Jarak antara teks kiri dan form kanan */
+}
+
+.subs-content {
+    flex: 1;
+    text-align: left;
+}
+
+.subs-content h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.subs-content p {
+    font-size: 14px;
+    color: #94a3b8; /* Warna abu-abu kebiruan terang */
+    line-height: 1.6;
+}
+
+.subs-form {
+    display: flex;
+    gap: 12px;
+    flex: 0.8; /* Membuat area form sedikit lebih kecil dari area teks */
+}
+
+.subs-form input {
+    flex: 1; /* Membuat kotak input memanjang mengisi ruang kosong */
+    padding: 14px 20px;
+    border-radius: 25px;
+    border: 1px solid #334155;
+    background-color: #1e293b; /* Warna latar dalam kotak input */
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+/* =========================================
+   6. PENGATURAN FOOTER
+   ========================================= */
+.site-footer {
+    padding: 60px 50px 30px 50px;
+    background-color: #fafafa;
+}
+
+/* KOTAK GRID: Membagi 4 kolom (Kolom pertama lebih lebar) */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr; 
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Logo di Footer */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.footer-logo img {
+    height: 30px;
+    width: auto;
+}
+
+.footer-logo h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+}
+
+.brand-col p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Teks dan Tautan Footer */
+.footer-col h4 {
+    font-size: 14px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 20px;
+}
+
+.footer-col a {
+    font-size: 13px;
+    color: #6b7280;
+    text-decoration: none;
+    margin-bottom: 12px;
+    transition: 0.3s;
+}
+
+.footer-col a:hover {
+    color: #facc15;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    font-size: 18px; /* Memperbesar ukuran emoji/ikon */
+}
+
+/* Garis dan Hak Cipta Paling Bawah */
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #e5e7eb; /* Garis pemisah halus */
+    font-size: 11px;
+    color: #9ca3af;
+}

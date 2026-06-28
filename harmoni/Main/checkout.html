@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmoni - Checkout</title>
+    <link rel="stylesheet" href="../css/checkout.css">
+    <style>
+        .qris-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            border: 2px dashed #e5e7eb;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+        .qris-box .qr-placeholder {
+            width: 160px; height: 160px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .error-inline { color: #e53e3e; font-size: .8rem; margin-top: 4px; display: none; }
+        .form-group input.invalid, .form-group select.invalid { border-color: #e53e3e; }
+        .form-group input.invalid + .error-inline, .form-group select.invalid + .error-inline { display: block; }
+        .shipping-calc {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo" onclick="window.location.href='homepage.html'" style="cursor:pointer;">
+            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
+            <h2>HARMONI</h2>
+        </div>
+        <div class="nav-links">
+            <a href="katalog.html">Shop</a>
+            <a href="#">Bantuan</a>
+            <a href="keranjang.html" class="cart-badge">🛒 <span id="cartCount">0</span></a>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+
+        <div class="checkout-left">
+
+            <div class="breadcrumbs">
+                <a href="keranjang.html">Keranjang</a> &rsaquo; <span>Checkout</span>
+            </div>
+
+            <div class="page-title">
+                <h1>Checkout</h1>
+                <p>Isi penerima dan alamat</p>
+            </div>
+
+            <section class="checkout-section">
+                <div class="section-header">
+                    <span class="step-number">1</span>
+                    <h2>Informasi Penerima</h2>
+                </div>
+                <div class="form-group">
+                    <label>Penerima <span style="color:#e53e3e">*</span></label>
+                    <input type="text" id="recipientName" placeholder="Nama lengkap penerima">
+                    <span class="error-inline">Nama penerima tidak boleh kosong.</span>
+                </div>
+                <div class="form-group">
+                    <label>Nomor Telepon <span style="color:#e53e3e">*</span></label>
+                    <input type="tel" id="recipientPhone" placeholder="08xx-xxxx-xxxx">
+                    <span class="error-inline">Nomor telepon tidak boleh kosong.</span>
+                </div>
+                <div class="form-group">
+                    <label>Alamat Lengkap <span style="color:#e53e3e">*</span></label>
+                    <input type="text" id="recipientAddress" placeholder="Jl. Soekarno No. 123">
+                    <span class="error-inline">Alamat tidak boleh kosong.</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" id="kotaContainer">
+                        <label>Provinsi <span style="color:#e53e3e">*</span></label>
+                        <select id="recipientCity" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <option value="">⏳ Memuat data API...</option>
+                        </select>
+                        <span class="error-inline">Provinsi tidak boleh kosong.</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Kode Pos</label>
+                        <input type="text" id="recipientZip" placeholder="60115">
+                    </div>
+                </div>
+            </section>
+
+            <section class="checkout-section">
+                <div class="section-header">
+                    <span class="step-number">2</span>
+                    <h2>Metode Pengiriman</h2>
+                </div>
+
+                <div class="shipping-options">
+                    <label class="radio-card active-card" id="ship-standard" onclick="selectShipping(this, 10000)">
+                        <div class="radio-left">
+                            <input type="radio" name="shipping" value="10000" checked>
+                            <div>
+                                <h4>Standard Delivery</h4>
+                                <p>4–7 Hari</p>
+                            </div>
+                        </div>
+                        <span class="price-bold">Rp10.000</span>
+                    </label>
+
+                    <label class="radio-card" id="ship-express" onclick="selectShipping(this, 20000)">
+                        <div class="radio-left">
+                            <input type="radio" name="shipping" value="20000">
+                            <div>
+                                <h4>Express</h4>
+                                <p>1–2 hari kerja</p>
+                            </div>
+                        </div>
+                        <span class="price-bold">Rp20.000</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="checkout-section">
+                <div class="section-header">
+                    <span class="step-number">3</span>
+                    <h2>Pembayaran</h2>
+                </div>
+
+                <div class="payment-tabs">
+                    <button class="tab-btn active-tab" id="tab-va" onclick="switchTab('va')">💳 Virtual Account</button>
+                    <button class="tab-btn" id="tab-qris" onclick="switchTab('qris')">QRIS</button>
+                </div>
+
+                <div id="panel-va" class="payment-box">
+                    <h4>Virtual Account</h4>
+                    <p class="subtitle">Pilih jalur bank yang diinginkan</p>
+
+                    <div class="bank-list">
+                        <label class="bank-item">
+                            <div class="bank-info">
+                                <div class="bank-logo bg-blue">BCA</div>
+                                <span>Bank Central Asia</span>
+                            </div>
+                            <input type="radio" name="bank" value="BCA">
+                        </label>
+                        <label class="bank-item">
+                            <div class="bank-info">
+                                <div class="bank-logo bg-blue-dark">BRI</div>
+                                <span>Bank Rakyat Indonesia</span>
+                            </div>
+                            <input type="radio" name="bank" value="BRI">
+                        </label>
+                        <label class="bank-item">
+                            <div class="bank-info">
+                                <div class="bank-logo bg-yellow">MDR</div>
+                                <span>Bank Mandiri</span>
+                            </div>
+                            <input type="radio" name="bank" value="Mandiri">
+                        </label>
+                        <label class="bank-item">
+                            <div class="bank-info">
+                                <div class="bank-logo bg-orange">BNI</div>
+                                <span>Bank Negara Indonesia</span>
+                            </div>
+                            <input type="radio" name="bank" value="BNI">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="panel-qris" class="qris-box">
+                    <h4>Bayar dengan QRIS</h4>
+                    <p style="color:#6b7280; font-size:.875rem;">Scan kode QR di bawah menggunakan aplikasi dompet digital Anda.</p>
+                    <div class="qr-placeholder">📱</div>
+                    <p style="font-size:.8rem; color:#9ca3af;">Total: <strong id="qrisTotal">Rp0</strong></p>
+                </div>
+            </section>
+
+            <button class="btn-pesan" onclick="placeOrder()">PESAN</button>
+            <p class="terms-text">Dengan klik PESAN, Anda menyetujui Syarat &amp; Ketentuan kami.</p>
+
+        </div>
+
+        <div class="checkout-right">
+            <div class="order-card">
+                <h3>Orderan</h3>
+
+                <div class="order-items" id="orderItems">
+                    </div>
+
+                <div class="order-calculations">
+                    <div class="calc-row">
+                        <span>Subtotal</span>
+                        <span id="summSubtotal">Rp0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Pengiriman</span>
+                        <span id="summShipping" class="shipping-calc">Rp10.000</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Pajak (10%)</span>
+                        <span id="summTax">Rp0</span>
+                    </div>
+                    <div class="calc-row total-row">
+                        <span>Total</span>
+                        <span class="total-price" id="summTotal">Rp0</span>
+                    </div>
+                </div>
+
+                <div class="promo-box">
+                    <input type="text" id="promoInput" placeholder="Kode promo">
+                    <button onclick="applyPromo()">Apply</button>
+                </div>
+
+                <div class="secure-badge">
+                    <span>🔒 SECURE CHECKOUT</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="checkout-footer">
+        <div class="footer-left">
+            <p>🎁 HARMONI © 2024</p>
+        </div>
+        <div class="footer-right">
+            <a href="#">Kebijakan Privasi</a>
+            <a href="#">Syarat Layanan</a>
+            <a href="#">Kebijakan Pengembalian</a>
+        </div>
+    </footer>
+
+    <script>
+        const defaultCart = [
+            { id: 1, name: 'Marning Jagung', variant: 'Original', price: 18000, qty: 1, img: '../image/Harmoni.png' },
+            { id: 2, name: 'Kue Kacang',     variant: 'Original', price: 15000, qty: 1, img: '../image/Kue Kacang Original.jpg' },
+        ];
+        let cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || 'null') || defaultCart;
+        let shippingCost = 10000;
+
+        function fmt(n) { return 'Rp' + n.toLocaleString('id-ID'); }
+
+        function renderSummary() {
+            const items = document.getElementById('orderItems');
+            items.innerHTML = cart.map(it => `
+                <div class="order-item">
+                    <img src="${it.img}" alt="${it.name}" class="item-img" onerror="this.src='../image/Harmoni.png'">
+                    <div class="item-details">
+                        <h4>${it.name}</h4>
+                        <p>Qty: ${it.qty}</p>
+                        <strong>${fmt(it.price * it.qty)}</strong>
+                    </div>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((s, it) => s + it.price * it.qty, 0);
+            const tax = Math.round(subtotal * 0.10);
+            const total = subtotal + shippingCost + tax;
+
+            document.getElementById('summSubtotal').textContent = fmt(subtotal);
+            document.getElementById('summShipping').textContent = fmt(shippingCost);
+            document.getElementById('summTax').textContent = fmt(tax);
+            document.getElementById('summTotal').textContent = fmt(total);
+            document.getElementById('qrisTotal').textContent = fmt(total);
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function selectShipping(el, cost) {
+            document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('active-card'));
+            el.classList.add('active-card');
+            shippingCost = cost;
+            document.getElementById('summShipping').textContent = fmt(cost);
+            renderSummary();
+        }
+
+        function switchTab(tab) {
+            document.getElementById('panel-va').style.display    = tab === 'va'   ? 'block' : 'none';
+            document.getElementById('panel-qris').style.display  = tab === 'qris' ? 'flex'  : 'none';
+            document.getElementById('tab-va').classList.toggle('active-tab',   tab === 'va');
+            document.getElementById('tab-qris').classList.toggle('active-tab', tab === 'qris');
+            if (tab === 'qris') document.getElementById('panel-qris').style.display = 'block';
+        }
+
+        function applyPromo() {
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            if (code === 'HARMONI10') {
+                showToast('Kode promo berhasil! Diskon 10% diterapkan. 🎉');
+            } else {
+                showToast('Kode promo tidak valid.');
+            }
+        }
+
+        function validateField(id, check) {
+            const el = document.getElementById(id);
+            const ok = check(el.value);
+            el.classList.toggle('invalid', !ok);
+            return ok;
+        }
+
+        function placeOrder() {
+            const v1 = validateField('recipientName',    v => v.trim().length > 0);
+            const v2 = validateField('recipientPhone',   v => v.trim().length > 0);
+            const v3 = validateField('recipientAddress', v => v.trim().length > 0);
+            const v4 = validateField('recipientCity',    v => v.trim().length > 0);
+
+            if (!v1 || !v2 || !v3 || !v4) {
+                showToast('Lengkapi informasi penerima terlebih dahulu.');
+                document.getElementById('recipientName').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            
+            const id_pelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
+            if (!id_pelanggan) {
+                showToast('Anda harus login terlebih dahulu.');
+                setTimeout(() => window.location.href = '../index.html', 1500);
+                return;
+            }
+            if (cart.length === 0) {
+                showToast('Keranjang Anda kosong.');
+                return;
+            }
+
+            const activeShip = document.querySelector('.radio-card.active-card h4');
+            const metode_pengiriman = activeShip ? activeShip.textContent : 'Standard Delivery';
+            
+            const activeBank = document.querySelector('input[name="bank"]:checked');
+            let metode_pembayaran = activeBank ? activeBank.value : 'Bank Transfer';
+            if (document.getElementById('tab-qris').classList.contains('active-tab')) {
+                metode_pembayaran = 'QRIS';
+            }
+
+            const payload = {
+                id_pelanggan: id_pelanggan,
+                nama_penerima: document.getElementById('recipientName').value.trim(),
+                telepon: document.getElementById('recipientPhone').value.trim(),
+                alamat: document.getElementById('recipientAddress').value.trim(),
+                kota: document.getElementById('recipientCity').value,
+                kode_pos: document.getElementById('recipientZip').value.trim(),
+                metode_pengiriman: metode_pengiriman,
+                biaya_pengiriman: shippingCost,
+                metode_pembayaran: metode_pembayaran,
+                cart: cart
+            };
+
+            const btn = document.querySelector('.btn-pesan');
+            btn.textContent = 'Memproses...';
+            btn.disabled = true;
+
+            fetch('../checkout_action.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json().then(data => ({status: res.status, body: data})))
+            .then(res => {
+                if (res.status === 201) {
+                    sessionStorage.removeItem('harmoni_cart');
+                    sessionStorage.setItem('harmoni_last_order', res.body.id_pesanan);
+                    window.location.href = 'invoice.html';
+                } else {
+                    showToast(res.body.message || 'Gagal memproses pesanan.');
+                    btn.textContent = 'PESAN';
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                showToast('Terjadi kesalahan koneksi.');
+                btn.textContent = 'PESAN';
+                btn.disabled = false;
+            });
+        }
+
+        function showToast(msg) {
+            let t = document.getElementById('toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'toast';
+                t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.style.opacity = '1';
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.style.opacity = '0', 3000);
+        }
+
+        renderSummary();
+    
+        // Fungsi Fetch API yang telah diperbaiki
+        async function loadProvinces() {
+            const select = document.getElementById('recipientCity');
+    
+            try {
+                // Fetch data dari repository IBNUX yang jauh lebih stabil
+                const response = await fetch('https://ibnux.github.io/data-indonesia/provinsi.json');
+                
+                if (!response.ok) {
+                    throw new Error('Gagal menarik data dari server');
+                }
+
+                const provinces = await response.json();
+        
+                // Bersihkan tulisan "Memuat data API..."
+                select.innerHTML = '<option value="">Pilih Provinsi...</option>';
+        
+                // Looping data provinsi ke dalam opsi dropdown
+                provinces.forEach(prov => {
+                    const option = document.createElement('option');
+                    // Endpoint IBNUX menggunakan properti .nama, BUKAN .name
+                    option.value = prov.nama;
+                    option.textContent = prov.nama;
+                    select.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Gagal memuat API Provinsi", error);
+                select.innerHTML = '<option value="">Gagal memuat API (Periksa Koneksi)</option>';
+                showToast('Koneksi terputus. Gagal memuat data provinsi.');
+            }
+        }
+
+        // Panggil fungsi saat halaman selesai dimuat
+        loadProvinces();
+    </script>
+</body>
+</html>
