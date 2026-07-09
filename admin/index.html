@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HARMONI - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .error-msg {
+      color: #e53e3e;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    .input-group input.invalid {
+      border-color: #e53e3e;
+      background: #fff5f5;
+    }
+
+    .login-alert {
+      background: #fff5f5;
+      border: 1px solid #e53e3e;
+      border-radius: 8px;
+      color: #c53030;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .login-alert.visible {
+      display: block;
+    }
+
+    .btn-primary.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header-logo">
+      <h1>HARMONI</h1>
+      <p>Pusat Oleh-oleh Jember</p>
+    </div>
+
+    <div class="login-card">
+      <h2>Selamat datang</h2>
+      <p class="subtitle">Silahkan masuk akun anda</p>
+
+      <div class="login-alert" id="loginAlert">Email atau password salah.</div>
+
+      <form id="loginForm" onsubmit="return false;">
+        <div class="input-group">
+          <label for="email">EMAIL ADDRESS</label>
+          <input type="email" id="email" placeholder="Masukkan email anda" autocomplete="email">
+          <span class="error-msg" id="emailError">Masukkan email yang valid.</span>
+        </div>
+
+        <div class="input-group">
+          <div class="password-header">
+            <label for="password">PASSWORD</label>
+            <p>Lupa Password? <a href="#" class="forgot-password" onclick="showForgotToast(); return false;">Klik
+                disini</a></p>
+          </div>
+          <input type="password" id="password" placeholder="Masukkan password anda" autocomplete="current-password">
+          <span class="error-msg" id="passwordError">Password tidak boleh kosong.</span>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn" onclick="handleLogin()">Sign In</button>
+      </form>
+
+      <div class="divider">
+        <span>ATAU MASUK MENGGUNAKAN</span>
+      </div>
+
+      <div class="button-group">
+        <button type="button" class="btn-secondary" onclick="showComingSoon()">Nomor Telepon</button>
+        <button type="button" class="btn-secondary" onclick="showComingSoon()">Akun Google</button>
+      </div>
+    </div>
+
+    <div class="register-link">
+      <p>Belum punya akun?</p>
+      <a href="register.html" class="buat-akun">Buat Akun</a>
+    </div>
+
+    <div class="footer">
+      <div class="footer-links">
+        <a href="#">KEBIJAKAN PRIVASI</a>
+        <a href="#">KETENTUAN LAYANAN</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function setError(inputId, errorId, show) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      if (show) {
+        input.classList.add('invalid');
+        error.classList.add('visible');
+      } else {
+        input.classList.remove('invalid');
+        error.classList.remove('visible');
+      }
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const alert = document.getElementById('loginAlert');
+      const btn = document.getElementById('loginBtn');
+
+      // Reset states
+      alert.classList.remove('visible');
+      setError('email', 'emailError', false);
+      setError('password', 'passwordError', false);
+
+      let valid = true;
+
+      if (!email || !validateEmail(email)) {
+        setError('email', 'emailError', true);
+        valid = false;
+      }
+      if (!password) {
+        setError('password', 'passwordError', true);
+        valid = false;
+      }
+      if (!valid) return;
+
+      // Loading state
+      btn.textContent = 'Masuk...';
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      const data = {
+        email: email,
+        password: password
+      };
+
+      fetch('login_action.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(res => {
+          if (res.status === 200) {
+            const user = res.body.user;
+            sessionStorage.setItem('harmoni_role', user.role);
+            sessionStorage.setItem('harmoni_user', user.username);
+            sessionStorage.setItem('harmoni_id_pelanggan', user.id_pelanggan);
+
+            if (user.role === 'admin') {
+              window.location.href = 'admin/index.html';
+            } else {
+              window.location.href = 'Main/homepage.html';
+            }
+          } else {
+            alert.textContent = res.body.message || "Email atau password salah.";
+            alert.classList.add('visible');
+            btn.textContent = 'Sign In';
+            btn.classList.remove('loading');
+            btn.disabled = false;
+          }
+        })
+        .catch(error => {
+          alert.textContent = "Gagal menghubungi server.";
+          alert.classList.add('visible');
+          btn.textContent = 'Sign In';
+          btn.classList.remove('loading');
+          btn.disabled = false;
+        });
+    }
+
+    // Allow Enter key submission
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('password').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleLogin();
+      });
+      document.getElementById('email').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('password').focus();
+      });
+    });
+
+    function showForgotToast() {
+      showToast('Fitur reset password segera hadir!');
+    }
+
+    function showComingSoon() {
+      showToast('Fitur ini segera hadir!');
+    }
+
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast';
+        t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;transition:opacity .3s';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity = '1';
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.style.opacity = '0', 2500);
+    }
+  </script>
+</body>
+
+</html>

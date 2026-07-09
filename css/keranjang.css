@@ -1,0 +1,218 @@
+/* 1. RESET DASAR */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #e5e7eb; /* Latar abu-abu agar kotak keranjang terlihat seperti pop-up */
+    color: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* 2. KOTAK PUTIH UTAMA */
+.cart-box {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08); /* Efek melayang */
+}
+
+/* 3. HEADER (Logo & Tombol X) */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.brand img {
+    height: 30px;
+}
+.brand h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+.btn-close {
+    background-color: #fef08a; /* Warna kuning pudar */
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    color: #111827;
+}
+
+.cart-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+/* 4. DAFTAR ITEM */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.cart-item {
+    display: flex;
+    background-color: #f9fafb; /* Abu-abu sangat terang */
+    padding: 16px;
+    border-radius: 16px;
+    gap: 16px;
+}
+
+.item-img {
+    width: 60px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: #e5e7eb;
+}
+
+.item-info {
+    flex: 1; /* Mengisi ruang tengah */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.item-info h3 {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+.variant {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+.price {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ca8a04; /* Kuning gelap */
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.btn-delete {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Tombol + dan - */
+.qty-control {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 4px 8px;
+    gap: 12px;
+}
+.qty-control button {
+    background: none;
+    border: none;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    color: #111827;
+}
+.qty-control span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 5. RINGKASAN HARGA */
+.cart-summary {
+    border-top: 1px solid #f3f4f6; /* Garis pemisah */
+    padding-top: 24px;
+    margin-bottom: 24px;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 1px;
+}
+.value {
+    font-size: 14px;
+    font-weight: 800;
+}
+.value-light {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+.total-row {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.label-total {
+    font-size: 16px;
+    font-weight: 800;
+}
+.value-total {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+/* 6. TOMBOL BAWAH */
+.btn-checkout {
+    width: 100%;
+    background-color: #facc15; /* Kuning khas */
+    color: #111827;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: 0.3s;
+}
+.btn-checkout:hover {
+    background-color: #eab308;
+}
+
+.continue-shopping {
+    text-align: center;
+}
+.continue-shopping a {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+    text-decoration: none;
+}
+.continue-shopping a:hover {
+    text-decoration: underline;
+}
