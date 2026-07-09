@@ -511,7 +511,7 @@ function loadAdminData(filter = 'year') {
         })
         .catch(err => {
             console.error('Failed to load admin data:', err);
-            showToast('Gagal memuat data dari database.');
+            showToast('Error: ' + err.message);
         });
 }
 

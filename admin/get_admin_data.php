@@ -101,7 +101,7 @@ try {
             SELECT EXTRACT(DAY FROM tanggal_pesanan) as d, SUM(total_harga) as total
             FROM pesanan
             WHERE status_pesanan != 'Dibatalkan' AND EXTRACT(MONTH FROM tanggal_pesanan) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM tanggal_pesanan) = EXTRACT(YEAR FROM CURRENT_DATE)
-            GROUP BY d
+            GROUP BY 1
         ");
         $db_chart = $stmtChart->fetchAll(PDO::FETCH_ASSOC);
         
@@ -126,8 +126,8 @@ try {
             SELECT EXTRACT(MONTH FROM tanggal_pesanan) as m, EXTRACT(YEAR FROM tanggal_pesanan) as y, SUM(total_harga) as total
             FROM pesanan
             WHERE status_pesanan != 'Dibatalkan' AND tanggal_pesanan >= CURRENT_DATE - INTERVAL '6 month'
-            GROUP BY y, m
-            ORDER BY y ASC, m ASC
+            GROUP BY 2, 1
+            ORDER BY 2 ASC, 1 ASC
         ");
         $db_chart = $stmtChart->fetchAll(PDO::FETCH_ASSOC);
         
