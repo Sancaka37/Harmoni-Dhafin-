@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmoni - Detail Produk</title>
+    <link rel="stylesheet" href="../css/detail_produk.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo" style="cursor: pointer;" onclick="window.location.href='homepage.html'">
+            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
+            <h2>HARMONI</h2>
+        </div>
+        <div class="nav-search">
+            <input type="text" placeholder="Cari kesukaanmu..." onkeydown="if(event.key==='Enter'){ window.location.href='katalog.html?q='+this.value; }">
+        </div>
+        <div class="nav-actions">
+            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
+            <div class="profile-avatar" style="cursor:pointer;" onclick="window.location.href='homepage.html'">
+                <img src="../image/profile.png" alt="profil">
+            </div>
+        </div>
+    </nav>
+
+    <div class="product-detail-container">
+
+        <div class="product-gallery">
+            <div class="main-image-wrapper">
+                <img id="mainImage" src="../image/Kue Kacang Original.jpg" alt="Produk Utama">
+            </div>
+
+            <div class="thumbnail-grid" id="thumbnailContainer">
+                <div class="thumb-wrapper active-thumb" onclick="changeImage(this, '../image/Kue Kacang Original.jpg')">
+                    <img src="../image/Kue Kacang Original.jpg" alt="Detail 1">
+                </div>
+                <div class="thumb-wrapper" onclick="changeImage(this, '../image/Sub 2.png')">
+                    <img src="../image/Sub 2.png" alt="Detail 2">
+                </div>
+                <div class="thumb-wrapper" onclick="changeImage(this, '../image/Sub 3.png')">
+                    <img src="../image/Sub 3.png" alt="Detail 3">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-info">
+            <p class="rating-header">⭐ 4.9 (124 REVIEWS)</p>
+            <h1 id="productTitle">Kue Kacang Premium</h1>
+            <p class="price" id="productPrice">Rp 36.000</p>
+
+            <p class="description">
+                Kue Kacang Original adalah camilan khas Jember yang terbuat dari campuran kacang tanah, gula, dan tepung. Dengan tekstur yang renyah di luar dan lembut di dalam, kue ini menawarkan rasa manis yang pas dengan aroma kacang yang menggoda. Cocok untuk dinikmati sebagai teman minum teh atau kopi, serta sebagai oleh-oleh khas Jember yang selalu dicari.
+            </p>
+
+            <div class="purchase-actions">
+                <p class="satuan-info">Jumlah: <span id="satuanAngka">0</span></p>
+                <div class="counter-container">
+                    <button type="button" class="btn-counter" onclick="ubahJumlah('kurang')">&minus;</button>
+                    <input type="text" id="inputJumlah" class="counter-input" value="0" readonly>
+                    <button type="button" class="btn-counter" onclick="ubahJumlah('tambah')">&plus;</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-primary-dark" onclick="addToCart()">Masukkan Keranjang</button>
+                <button class="btn-favorite" id="favBtn">❤️ Favorite</button>
+            </div>
+
+            <div class="message-box">
+                <p>PESAN</p>
+                <span id="editableText" onclick="transformToInput()" style="cursor:pointer;">"Untuk acara, Hampers, dan lainnya"</span>
+                <span class="arrow-icon">→</span>
+            </div>
+
+            <div class="testimonial-group">
+                <h3>Testimoni</h3>
+                <div class="testi-item">
+                    <img src="../image/profile.png" alt="Jane Doe">
+                    <div class="user-testi">
+                        <h4>Jane Doe</h4>
+                        <p>"Beli buat oleh-oleh, malah habis duluan di rumah 😊"</p>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <img src="../image/profile.png" alt="Marcus Smith">
+                    <div class="user-testi">
+                        <h4>Marcus Smith</h4>
+                        <p>"Awalnya kira rasanya bakal biasa aja, ternyata enak banget 🤤 lembut dan nggak terlalu manis."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>© Harmoni Jember. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;"></div>
+
+    <script>
+        function transformToInput() {
+            const p = document.getElementById("editableText");
+            const input = document.createElement("input");
+            input.value = p.innerText;
+            input.id = "editableText";
+            input.style.cssText = 'border:1px solid #e5e7eb;border-radius:6px;padding:6px 10px;font-size:inherit;width:100%;';
+            input.onblur = function() {
+                const newSpan = document.createElement("span");
+                newSpan.innerText = input.value;
+                newSpan.id = "editableText";
+                newSpan.onclick = transformToInput;
+                newSpan.style.cursor = 'pointer';
+                input.replaceWith(newSpan);
+            };
+            p.replaceWith(input);
+            input.focus();
+        }
+
+        function changeImage(clickedThumb, newSrc) {
+            document.getElementById('mainImage').src = newSrc;
+            document.querySelectorAll('.thumb-wrapper').forEach(t => t.classList.remove('active-thumb'));
+            clickedThumb.classList.add('active-thumb');
+        }
+
+        document.getElementById('favBtn').addEventListener('click', function() {
+            this.classList.toggle('isActive');
+            showToast(this.classList.contains('isActive') ? 'Ditambahkan ke favorit ❤️' : 'Dihapus dari favorit');
+        });
+
+        function ubahJumlah(aksi) {
+            const input = document.getElementById('inputJumlah');
+            const satuan = document.getElementById('satuanAngka');
+            let n = parseInt(input.value) || 0;
+            if (aksi === 'tambah') n++;
+            else if (aksi === 'kurang' && n > 0) n--;
+            else if (aksi === 'kurang' && n === 0) {
+                showToast('Jumlah tidak bisa kurang dari 0.');
+                return;
+            }
+            input.value = n;
+            satuan.textContent = n;
+        }
+
+        let currentProduct = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            if (productId) {
+                fetch(`../get_produk_detail.php?id=${productId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) {
+                            showToast(data.error);
+                            return;
+                        }
+                        currentProduct = data;
+                        renderProduct(data);
+                    })
+                    .catch(err => {
+                        console.error("Gagal mengambil detail produk", err);
+                        showToast("Gagal memuat produk.");
+                    });
+            } else {
+                showToast("ID produk tidak ditemukan.");
+            }
+
+            const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+        });
+
+        function renderProduct(p) {
+            document.getElementById('productTitle').textContent = p.nama_produk;
+            document.getElementById('productPrice').textContent = 'Rp ' + parseFloat(p.harga).toLocaleString('id-ID');
+            document.querySelector('.description').textContent = p.deskripsi || 'Tidak ada deskripsi.';
+            
+            document.getElementById('mainImage').src = p.url_gambar;
+            document.getElementById('mainImage').alt = p.nama_produk;
+
+            const thumbs = document.getElementById('thumbnailContainer');
+            thumbs.innerHTML = `
+                <div class="thumb-wrapper active-thumb" onclick="changeImage(this, '${p.url_gambar}')">
+                    <img src="${p.url_gambar}" alt="Detail">
+                </div>
+            `;
+            // Set stats dummy for now
+            document.querySelector('.rating-header').textContent = `⭐ 4.9 (${p.terjual || 0} Terjual)`;
+        }
+
+        function addToCart() {
+            if (!currentProduct) {
+                showToast('Data produk belum siap.');
+                return;
+            }
+            const qty = parseInt(document.getElementById('inputJumlah').value) || 0;
+            if (qty <= 0) {
+                showToast('Tentukan jumlah produk terlebih dahulu.');
+                return;
+            }
+            if (qty > currentProduct.stok) {
+                showToast('Maaf, stok hanya tersisa ' + currentProduct.stok);
+                return;
+            }
+
+            const title = currentProduct.nama_produk;
+            const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
+            const existing = cart.find(it => it.id === currentProduct.id_produk);
+
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({
+                    id: currentProduct.id_produk,
+                    name: title,
+                    variant: currentProduct.nama_kategori || 'Original',
+                    price: parseFloat(currentProduct.harga),
+                    qty: qty,
+                    img: currentProduct.url_gambar
+                });
+            }
+
+            sessionStorage.setItem('harmoni_cart', JSON.stringify(cart));
+            document.getElementById('cartCount').textContent = cart.length;
+            showToast(qty + '× ' + title + ' ditambahkan ke keranjang 🛒');
+            document.getElementById('inputJumlah').value = 0;
+            document.getElementById('satuanAngka').textContent = 0;
+        }
+
+        function showToast(msg) {
+            let t = document.getElementById('toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'toast';
+                t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.style.opacity = '1';
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.style.opacity = '0', 3000);
+        }
+    </script>
+</body>
+</html>

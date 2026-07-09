@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmoni - Beranda</title>
+    <link rel="stylesheet" href="../css/homepage.css">
+    <style>
+        .profile-dropdown { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0; top: 110%;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            min-width: 160px;
+            z-index: 100;
+            overflow: hidden;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 16px;
+            color: #374151;
+            text-decoration: none;
+            font-size: .875rem;
+        }
+        .dropdown-menu a:hover { background: #f9fafb; }
+        .dropdown-menu a.logout { color: #e53e3e; border-top: 1px solid #f3f4f6; }
+        .profile-dropdown:hover .dropdown-menu { display: block; }
+        .user-greeting { font-size: .8rem; color: #6b7280; margin-right: 4px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo" style="cursor: pointer;" onclick="window.location.href='homepage.html'">
+            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
+            <h2>HARMONI</h2>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" id="navSearch" placeholder="Cari oleh-oleh apa?" onkeydown="handleNavSearch(event)">
+        </div>
+
+        <div class="nav-actions">
+            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
+            <div class="profile-dropdown">
+                <div class="profile-avatar" style="cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <span class="user-greeting" id="userGreeting"></span>
+                    <img src="../image/profile.png" alt="profil" class="profil">
+                </div>
+                <div class="dropdown-menu">
+                    <a href="#">👤 Profil Saya</a>
+                    <a href="dashboard_user.html">📦 Pesanan Saya</a>
+                    <a href="../index.html" class="logout" onclick="logout()">🚪 Keluar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <span class="badge">PUSAT OLEH-OLEH JEMBER</span>
+            <h1>HARMONI</h1>
+            <p>Menyediakan berbagai oleh-oleh Jember!!
+                    Membawa Cita Rasa Kota Festival Pada Orang Tercinta</p>
+
+            <div class="hero-buttons">
+                <button class="btn-yellow" onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">Profile</button>
+                <button class="btn-outline" onclick="document.querySelector('.site-footer').scrollIntoView({behavior:'smooth'})">Kontak</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section">
+        <div class="category-header">
+            <div class="category-title">
+                <h2>Kategori</h2>
+                <p>Jelajahi koleksi terpopuler kami</p>
+            </div>
+            <a href="katalog.html" class="see-all">See All &rarr;</a>
+        </div>
+
+        <div class="category-grid">
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=crunchy'" style="cursor:pointer;">
+                <div class="card-image-wrapper">
+                    <img src="../image/Kripik Ubi Madu Harmoni.jpg" alt="Makanan Crunchy">
+                </div>
+                <div class="card-content">
+                    <h3>Crunchy</h3>
+                    <p>Sensasi renyah di setiap gigitan 😋</p>
+                </div>
+            </div>
+
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=chewy'" style="cursor:pointer;">
+                <div class="card-image-wrapper">
+                    <img src="../image/Suwar-suwir multirasa Harmoni.jpg" alt="Makanan Chewy">
+                </div>
+                <div class="card-content">
+                    <h3>Chewy</h3>
+                    <p>Cemilan kecil yang manis 😛</p>
+                </div>
+            </div>
+
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=original'" style="cursor:pointer;">
+                <div class="card-image-wrapper">
+                    <img src="../image/Soes Ori .jpeg" alt="Makanan Original">
+                </div>
+                <div class="card-content">
+                    <h3>Original</h3>
+                    <p>Makanan asli Harmoni sensasi asli 👍</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Profile Section -->
+    <section id="about-section" style="padding:60px 5%; background:#fff;">
+        <div style="max-width:900px; margin:0 auto; display:flex; gap:40px; align-items:center; flex-wrap:wrap;">
+            <img src="../image/Foto toko harmoni.jpeg" alt="Toko Harmoni" style="width:280px; border-radius:16px; object-fit:cover; height:220px; flex-shrink:0;">
+            <div>
+                <h2 style="font-size:1.8rem; margin-bottom:12px;">Tentang Harmoni</h2>
+                <p style="color:#6b7280; line-height:1.7;">Harmoni adalah pusat oleh-oleh khas Jember yang telah melayani pelanggan sejak lama. Kami menyediakan berbagai produk unggulan khas daerah, mulai dari makanan crunchy, chewy, hingga produk original Jember yang otentik. Setiap produk kami dipilih dengan teliti untuk memastikan kualitas terbaik sampai di tangan Anda.</p>
+                <p style="color:#6b7280; margin-top:10px; line-height:1.7;">📍 Jember, Jawa Timur &nbsp;|&nbsp; 📞 (0331) 123-456</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="testi-header">
+            <h2>Testimoni Pelanggan</h2>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+
+        <div class="testi-grid">
+            <div class="testi-card">
+                <p>"Produk oleh-oleh di toko ini sangat berkualitas dan pelayanan juga ramah. Sangat direkomendasikan bagi wisatawan yang mencari oleh-oleh khas daerah."</p>
+                <div class="testi-user">
+                    <img src="../image/profile.png" alt="Anang">
+                    <div class="user-info">
+                        <h4>Anang</h4>
+                        <span>Mahasiswa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testi-card">
+                <p>"Setiap pulang kampung, saya selalu beli oleh-oleh dari toko ini. Rasanya selalu mengingatkan saya pada suasana rumah."</p>
+                <div class="testi-user">
+                    <img src="../image/profile.png" alt="Tiara">
+                    <div class="user-info">
+                        <h4>Tiara</h4>
+                        <span>Ibu rumah tangga</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testi-card">
+                <p>"Kemarin beli buat dibawa ke luar kota, ternyata pada suka semua. Packaging-nya juga aman, nggak penyok sama sekali!"</p>
+                <div class="testi-user">
+                    <img src="../image/profile.png" alt="Fariz">
+                    <div class="user-info">
+                        <h4>Fariz</h4>
+                        <span>Pegawai</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subscription-section">
+        <div class="subs-content">
+            <h2>Gabung media informasi kami!</h2>
+            <p>Bergabunglah dengan media informasi kami untuk mendapatkan informasi koleksi terbaru serta ide hadiah unik yang langsung dikirim ke inbox Anda.</p>
+        </div>
+
+        <div class="subs-form">
+            <input type="email" id="subsEmail" placeholder="Email address">
+            <button type="button" class="btn-yellow" onclick="handleSubscribe()">Join</button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">
+                    <img src="../image/Logo no BG 1.png" alt="Logo Harmoni">
+                    <h3>HARMONI</h3>
+                </div>
+                <p>Pusat Oleh-oleh Jember!</p>
+                <p style="margin-top:8px; color:#9ca3af; font-size:.85rem;">📍 Jember, Jawa Timur<br>📞 (0331) 123-456</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="katalog.html">All Products</a>
+                <a href="katalog.html?sort=terbaru">New Arrivals</a>
+                <a href="katalog.html?sort=terlaris">Best Sellers</a>
+                <a href="#">Custom Orders</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Kebijakan Pengiriman</a>
+                <a href="#">Pengembalian</a>
+                <a href="#">Hubungi Kami</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#" title="Website">🌐</a>
+                    <a href="#" title="Email">@</a>
+                    <a href="#" title="WhatsApp">📱</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 HARMONI. All rights reserved. Pusat Oleh-oleh Jember.</p>
+        </div>
+    </footer>
+
+    <div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;"></div>
+
+    <script>
+        // Set greeting
+        const user = sessionStorage.getItem('harmoni_user');
+        if (user) {
+            document.getElementById('userGreeting').textContent = 'Halo, ' + user;
+        }
+        // Update cart count from sessionStorage
+        const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
+        document.getElementById('cartCount').textContent = cart.length;
+
+        function logout() {
+            sessionStorage.removeItem('harmoni_role');
+            sessionStorage.removeItem('harmoni_user');
+        }
+
+        function handleNavSearch(e) {
+            if (e.key === 'Enter') {
+                const q = document.getElementById('navSearch').value.trim();
+                if (q) window.location.href = 'katalog.html?q=' + encodeURIComponent(q);
+            }
+        }
+
+        function handleSubscribe() {
+            const email = document.getElementById('subsEmail').value.trim();
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Masukkan email yang valid.');
+                return;
+            }
+            showToast('Terima kasih! Anda telah bergabung. 🎉');
+            document.getElementById('subsEmail').value = '';
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.opacity = '1';
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.style.opacity = '0', 3000);
+        }
+    </script>
+</body>
+</html>

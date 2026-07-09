@@ -1,0 +1,76 @@
+/* 1. RESET DASAR */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+body { background-color: #f9fafb; color: #111827; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* 2. NAVBAR SEDERHANA */
+.navbar-simple { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: transparent; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand img { height: 30px; width: auto; }
+.brand h2 { font-size: 20px; font-weight: 900; }
+.cart-icon { font-size: 20px; cursor: pointer; }
+
+/* 3. TATA LETAK UTAMA */
+.invoice-container {
+    max-width: 650px; /* Membatasi lebar agar terlihat seperti struk/kartu */
+    margin: 40px auto;
+    width: 100%;
+    padding: 0 20px;
+    flex: 1; /* Mendorong footer ke bawah */
+}
+
+/* Pengaturan Umum Kartu */
+.card {
+    background-color: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+/* 4. KARTU 1: SUCCESS CARD */
+.success-card { text-align: center; }
+.check-icon { 
+    width: 60px; height: 60px; border-radius: 50%; border: 4px solid #facc15; 
+    color: #facc15; font-size: 30px; font-weight: bold; 
+    display: flex; justify-content: center; align-items: center; 
+    margin: 0 auto 24px auto; 
+}
+.success-card h1 { font-size: 24px; font-weight: 900; margin-bottom: 12px; }
+.success-card p { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 30px; }
+
+.action-buttons { display: flex; justify-content: center; gap: 15px; }
+.btn-yellow { background-color: #facc15; color: #111827; padding: 12px 30px; border: none; border-radius: 25px; font-size: 14px; font-weight: 800; cursor: pointer; }
+.btn-outline { background-color: transparent; color: #111827; padding: 12px 30px; border: 1px solid #e5e7eb; border-radius: 25px; font-size: 14px; font-weight: 800; text-decoration: none; display: inline-block; }
+
+/* 5. KARTU 2: ORDER DETAILS */
+.order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.order-header h2 { font-size: 18px; font-weight: 900; }
+.badge-processing { background-color: #fef08a; color: #ca8a04; padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+
+/* Info Pengiriman */
+.delivery-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-bottom: 30px; border-bottom: 1px solid #f3f4f6; margin-bottom: 30px; }
+.info-block { display: flex; gap: 12px; align-items: flex-start; }
+.info-block .icon { font-size: 20px; background-color: #fefce8; padding: 10px; border-radius: 50%; }
+.label { font-size: 11px; font-weight: 700; color: #9ca3af; margin-bottom: 4px; letter-spacing: 0.5px; }
+.value { font-size: 14px; font-weight: 800; color: #111827; }
+
+/* Daftar Item */
+.list-title { font-size: 12px; font-weight: 800; color: #9ca3af; margin-bottom: 20px; letter-spacing: 1px; }
+.item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background-color: #f3f4f6; }
+.item-desc { flex: 1; }
+.item-desc h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.item-desc p { font-size: 12px; color: #6b7280; }
+.item-price { font-size: 14px; font-weight: 800; }
+
+/* Ringkasan Harga */
+.order-summary { padding-top: 20px; border-top: 1px solid #f3f4f6; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+.total-row { margin-top: 20px; margin-bottom: 0; color: #111827; font-weight: 800; font-size: 16px; align-items: center; }
+.total-price { font-size: 20px; font-weight: 900; color: #facc15; }
+
+/* 6. FOOTER */
+.simple-footer { text-align: center; padding: 40px 20px; margin-top: auto; }
+.simple-footer p { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+.simple-footer a { color: #facc15; font-weight: 700; text-decoration: none; }
+.copyright { color: #9ca3af !important; }
