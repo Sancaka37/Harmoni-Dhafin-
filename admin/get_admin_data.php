@@ -31,8 +31,8 @@ try {
     $stmtRev = $conn->query("
         SELECT 
             SUM(total_harga) as all_time,
-            SUM(CASE WHEN MONTH(tanggal_pesanan) = MONTH(CURDATE()) AND YEAR(tanggal_pesanan) = YEAR(CURDATE()) THEN total_harga ELSE 0 END) as this_month,
-            SUM(CASE WHEN MONTH(tanggal_pesanan) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND YEAR(tanggal_pesanan) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN total_harga ELSE 0 END) as last_month
+            SUM(CASE WHEN EXTRACT(MONTH FROM tanggal_pesanan) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM tanggal_pesanan) = EXTRACT(YEAR FROM CURRENT_DATE) THEN total_harga ELSE 0 END) as this_month,
+            SUM(CASE WHEN EXTRACT(MONTH FROM tanggal_pesanan) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(YEAR FROM tanggal_pesanan) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') THEN total_harga ELSE 0 END) as last_month
         FROM pesanan
         WHERE status_pesanan != 'Dibatalkan'
     ");
@@ -98,9 +98,9 @@ try {
     
     if ($filter == 'month') {
         $stmtChart = $conn->query("
-            SELECT DAY(tanggal_pesanan) as d, SUM(total_harga) as total
+            SELECT EXTRACT(DAY FROM tanggal_pesanan) as d, SUM(total_harga) as total
             FROM pesanan
-            WHERE status_pesanan != 'Dibatalkan' AND MONTH(tanggal_pesanan) = MONTH(CURDATE()) AND YEAR(tanggal_pesanan) = YEAR(CURDATE())
+            WHERE status_pesanan != 'Dibatalkan' AND EXTRACT(MONTH FROM tanggal_pesanan) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM tanggal_pesanan) = EXTRACT(YEAR FROM CURRENT_DATE)
             GROUP BY d
         ");
         $db_chart = $stmtChart->fetchAll(PDO::FETCH_ASSOC);
@@ -123,9 +123,9 @@ try {
         ];
     } else {
         $stmtChart = $conn->query("
-            SELECT MONTH(tanggal_pesanan) as m, YEAR(tanggal_pesanan) as y, SUM(total_harga) as total
+            SELECT EXTRACT(MONTH FROM tanggal_pesanan) as m, EXTRACT(YEAR FROM tanggal_pesanan) as y, SUM(total_harga) as total
             FROM pesanan
-            WHERE status_pesanan != 'Dibatalkan' AND tanggal_pesanan >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            WHERE status_pesanan != 'Dibatalkan' AND tanggal_pesanan >= CURRENT_DATE - INTERVAL '6 month'
             GROUP BY y, m
             ORDER BY y ASC, m ASC
         ");
