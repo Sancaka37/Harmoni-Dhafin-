@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harmoni - Beranda</title>
     <link rel="stylesheet" href="../css/homepage.css">
     <style>
-        .profile-dropdown { position: relative; }
+        .profile-dropdown {
+            position: relative;
+        }
+
         .dropdown-menu {
             display: none;
             position: absolute;
-            right: 0; top: 110%;
+            right: 0;
+            top: 110%;
             background: #fff;
             border: 1px solid #e5e7eb;
             border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
             min-width: 160px;
             z-index: 100;
             overflow: hidden;
         }
+
         .dropdown-menu a {
             display: block;
             padding: 10px 16px;
@@ -26,12 +32,28 @@
             text-decoration: none;
             font-size: .875rem;
         }
-        .dropdown-menu a:hover { background: #f9fafb; }
-        .dropdown-menu a.logout { color: #e53e3e; border-top: 1px solid #f3f4f6; }
-        .profile-dropdown:hover .dropdown-menu { display: block; }
-        .user-greeting { font-size: .8rem; color: #6b7280; margin-right: 4px; }
+
+        .dropdown-menu a:hover {
+            background: #f9fafb;
+        }
+
+        .dropdown-menu a.logout {
+            color: #e53e3e;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .profile-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .user-greeting {
+            font-size: .8rem;
+            color: #6b7280;
+            margin-right: 4px;
+        }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -45,17 +67,12 @@
         </div>
 
         <div class="nav-actions">
-            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
-            <div class="profile-dropdown">
-                <div class="profile-avatar" style="cursor:pointer; display:flex; align-items:center; gap:6px;">
-                    <span class="user-greeting" id="userGreeting"></span>
-                    <img src="../image/profile.png" alt="profil" class="profil">
-                </div>
-                <div class="dropdown-menu">
-                    <a href="#">👤 Profil Saya</a>
-                    <a href="dashboard_user.html">📦 Pesanan Saya</a>
-                    <a href="../index.html" class="logout" onclick="logout()">🚪 Keluar</a>
-                </div>
+            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span
+                    id="cartCount">0</span>)</button>
+            <div class="profile-avatar" style="cursor:pointer; display:flex; align-items:center; gap:6px;"
+                onclick="window.location.href='../Main/dashboard_user.html?tab=profil'">
+                <span class="user-greeting" id="userGreeting"></span>
+                <img src="../image/profile.png" alt="profil" class="profil" id="globalProfileImg">
             </div>
         </div>
     </nav>
@@ -65,11 +82,13 @@
             <span class="badge">PUSAT OLEH-OLEH JEMBER</span>
             <h1>HARMONI</h1>
             <p>Menyediakan berbagai oleh-oleh Jember!!
-                    Membawa Cita Rasa Kota Festival Pada Orang Tercinta</p>
+                Membawa Cita Rasa Kota Festival Pada Orang Tercinta</p>
 
             <div class="hero-buttons">
-                <button class="btn-yellow" onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">Profile</button>
-                <button class="btn-outline" onclick="document.querySelector('.site-footer').scrollIntoView({behavior:'smooth'})">Kontak</button>
+                <button class="btn-yellow"
+                    onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">Profile</button>
+                <button class="btn-outline"
+                    onclick="document.querySelector('.site-footer').scrollIntoView({behavior:'smooth'})">Kontak</button>
             </div>
         </div>
     </section>
@@ -84,7 +103,8 @@
         </div>
 
         <div class="category-grid">
-            <div class="category-card" onclick="window.location.href='katalog.html?kategori=crunchy'" style="cursor:pointer;">
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=crunchy'"
+                style="cursor:pointer;">
                 <div class="card-image-wrapper">
                     <img src="../image/Kripik Ubi Madu Harmoni.jpg" alt="Makanan Crunchy">
                 </div>
@@ -94,7 +114,8 @@
                 </div>
             </div>
 
-            <div class="category-card" onclick="window.location.href='katalog.html?kategori=chewy'" style="cursor:pointer;">
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=chewy'"
+                style="cursor:pointer;">
                 <div class="card-image-wrapper">
                     <img src="../image/Suwar-suwir multirasa Harmoni.jpg" alt="Makanan Chewy">
                 </div>
@@ -104,7 +125,8 @@
                 </div>
             </div>
 
-            <div class="category-card" onclick="window.location.href='katalog.html?kategori=original'" style="cursor:pointer;">
+            <div class="category-card" onclick="window.location.href='katalog.html?kategori=original'"
+                style="cursor:pointer;">
                 <div class="card-image-wrapper">
                     <img src="../image/Soes Ori .jpeg" alt="Makanan Original">
                 </div>
@@ -119,11 +141,16 @@
     <!-- About / Profile Section -->
     <section id="about-section" style="padding:60px 5%; background:#fff;">
         <div style="max-width:900px; margin:0 auto; display:flex; gap:40px; align-items:center; flex-wrap:wrap;">
-            <img src="../image/Foto toko harmoni.jpeg" alt="Toko Harmoni" style="width:280px; border-radius:16px; object-fit:cover; height:220px; flex-shrink:0;">
+            <img src="../image/Foto toko harmoni.jpeg" alt="Toko Harmoni"
+                style="width:280px; border-radius:16px; object-fit:cover; height:220px; flex-shrink:0;">
             <div>
                 <h2 style="font-size:1.8rem; margin-bottom:12px;">Tentang Harmoni</h2>
-                <p style="color:#6b7280; line-height:1.7;">Harmoni adalah pusat oleh-oleh khas Jember yang telah melayani pelanggan sejak lama. Kami menyediakan berbagai produk unggulan khas daerah, mulai dari makanan crunchy, chewy, hingga produk original Jember yang otentik. Setiap produk kami dipilih dengan teliti untuk memastikan kualitas terbaik sampai di tangan Anda.</p>
-                <p style="color:#6b7280; margin-top:10px; line-height:1.7;">📍 Jember, Jawa Timur &nbsp;|&nbsp; 📞 (0331) 123-456</p>
+                <p style="color:#6b7280; line-height:1.7;">Harmoni adalah pusat oleh-oleh khas Jember yang telah
+                    melayani pelanggan sejak lama. Kami menyediakan berbagai produk unggulan khas daerah, mulai dari
+                    makanan crunchy, chewy, hingga produk original Jember yang otentik. Setiap produk kami dipilih
+                    dengan teliti untuk memastikan kualitas terbaik sampai di tangan Anda.</p>
+                <p style="color:#6b7280; margin-top:10px; line-height:1.7;">📍 Jember, Jawa Timur &nbsp;|&nbsp; 📞
+                    (0331) 123-456</p>
             </div>
         </div>
     </section>
@@ -136,7 +163,8 @@
 
         <div class="testi-grid">
             <div class="testi-card">
-                <p>"Produk oleh-oleh di toko ini sangat berkualitas dan pelayanan juga ramah. Sangat direkomendasikan bagi wisatawan yang mencari oleh-oleh khas daerah."</p>
+                <p>"Produk oleh-oleh di toko ini sangat berkualitas dan pelayanan juga ramah. Sangat direkomendasikan
+                    bagi wisatawan yang mencari oleh-oleh khas daerah."</p>
                 <div class="testi-user">
                     <img src="../image/profile.png" alt="Anang">
                     <div class="user-info">
@@ -147,7 +175,8 @@
             </div>
 
             <div class="testi-card">
-                <p>"Setiap pulang kampung, saya selalu beli oleh-oleh dari toko ini. Rasanya selalu mengingatkan saya pada suasana rumah."</p>
+                <p>"Setiap pulang kampung, saya selalu beli oleh-oleh dari toko ini. Rasanya selalu mengingatkan saya
+                    pada suasana rumah."</p>
                 <div class="testi-user">
                     <img src="../image/profile.png" alt="Tiara">
                     <div class="user-info">
@@ -158,7 +187,8 @@
             </div>
 
             <div class="testi-card">
-                <p>"Kemarin beli buat dibawa ke luar kota, ternyata pada suka semua. Packaging-nya juga aman, nggak penyok sama sekali!"</p>
+                <p>"Kemarin beli buat dibawa ke luar kota, ternyata pada suka semua. Packaging-nya juga aman, nggak
+                    penyok sama sekali!"</p>
                 <div class="testi-user">
                     <img src="../image/profile.png" alt="Fariz">
                     <div class="user-info">
@@ -173,7 +203,8 @@
     <section class="subscription-section">
         <div class="subs-content">
             <h2>Gabung media informasi kami!</h2>
-            <p>Bergabunglah dengan media informasi kami untuk mendapatkan informasi koleksi terbaru serta ide hadiah unik yang langsung dikirim ke inbox Anda.</p>
+            <p>Bergabunglah dengan media informasi kami untuk mendapatkan informasi koleksi terbaru serta ide hadiah
+                unik yang langsung dikirim ke inbox Anda.</p>
         </div>
 
         <div class="subs-form">
@@ -190,7 +221,8 @@
                     <h3>HARMONI</h3>
                 </div>
                 <p>Pusat Oleh-oleh Jember!</p>
-                <p style="margin-top:8px; color:#9ca3af; font-size:.85rem;">📍 Jember, Jawa Timur<br>📞 (0331) 123-456</p>
+                <p style="margin-top:8px; color:#9ca3af; font-size:.85rem;">📍 Jember, Jawa Timur<br>📞 (0331) 123-456
+                </p>
             </div>
 
             <div class="footer-col">
@@ -224,13 +256,37 @@
         </div>
     </footer>
 
-    <div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;"></div>
+    <div id="toast"
+        style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;">
+    </div>
 
     <script>
         // Set greeting
         const user = sessionStorage.getItem('harmoni_user');
         if (user) {
             document.getElementById('userGreeting').textContent = 'Halo, ' + user;
+        }
+        const idPelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
+        if (idPelanggan) {
+            fetch('../get_profil.php', {
+                method: 'POST',
+                body: JSON.stringify({ id_pelanggan: idPelanggan }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success && res.data.foto_profil && res.data.foto_profil !== 'profile.png') {
+                    const pic = res.data.foto_profil;
+                    document.getElementById('globalProfileImg').src = pic.startsWith('http') ? pic : '../image/uploads/' + pic;
+                    sessionStorage.setItem('harmoni_foto_profil', pic);
+                }
+            })
+            .catch(err => console.error(err));
+        } else {
+            const userPic = sessionStorage.getItem('harmoni_foto_profil');
+            if (userPic && userPic !== 'profile.png') {
+                document.getElementById('globalProfileImg').src = userPic.startsWith('http') ? userPic : '../image/uploads/' + userPic;
+            }
         }
         // Update cart count from sessionStorage
         const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
@@ -267,4 +323,5 @@
         }
     </script>
 </body>
+
 </html>

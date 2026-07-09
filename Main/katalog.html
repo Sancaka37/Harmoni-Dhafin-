@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +14,23 @@
             color: #9ca3af;
             font-size: 1rem;
         }
-        .product-card { cursor: pointer; transition: transform .2s, box-shadow .2s; }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
-        .nav-search input { width: 100%; }
+
+        .product-card {
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
+        }
+
+        .nav-search input {
+            width: 100%;
+        }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -26,12 +39,15 @@
             <h2>HARMONI</h2>
         </div>
         <div class="nav-search">
-            <input type="text" id="navSearch" placeholder="Cari kesukaanmu..." onkeydown="handleNavSearch(event)" oninput="handleSearchInput()">
+            <input type="text" id="navSearch" placeholder="Cari kesukaanmu..." onkeydown="handleNavSearch(event)"
+                oninput="handleSearchInput()">
         </div>
         <div class="nav-actions">
-            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
-            <div class="profile-avatar" style="cursor:pointer;" onclick="window.location.href='homepage.html'">
-                <img src="../image/profile.png" alt="profil">
+            <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span
+                    id="cartCount">0</span>)</button>
+            <div class="profile-avatar" style="cursor:pointer;"
+                onclick="window.location.href='../Main/dashboard_user.html?tab=profil'">
+                <img src="../image/profile.png" alt="profil" class="profil" id="globalProfileImg">
             </div>
         </div>
     </nav>
@@ -134,7 +150,7 @@
                 currentSort = sort;
                 document.querySelectorAll('.tag').forEach(t => t.classList.remove('active-tag'));
                 document.querySelectorAll('.tag').forEach(t => {
-                    if (t.textContent.toLowerCase().includes(sort.substring(0,5))) {
+                    if (t.textContent.toLowerCase().includes(sort.substring(0, 5))) {
                         t.classList.add('active-tag');
                     }
                 });
@@ -159,12 +175,37 @@
             // Cart count
             const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
             document.getElementById('cartCount').textContent = cart.length;
+
+            const idPelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
+            if (idPelanggan) {
+                fetch('../get_profil.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ id_pelanggan: idPelanggan }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.success && res.data.foto_profil && res.data.foto_profil !== 'profile.png') {
+                        const pic = res.data.foto_profil;
+                        const globalImg = document.getElementById('globalProfileImg');
+                        if (globalImg) globalImg.src = pic.startsWith('http') ? pic : '../image/uploads/' + pic;
+                        sessionStorage.setItem('harmoni_foto_profil', pic);
+                    }
+                })
+                .catch(err => console.error(err));
+            } else {
+                const userPic = sessionStorage.getItem('harmoni_foto_profil');
+                if (userPic && userPic !== 'profile.png') {
+                    const globalImg = document.getElementById('globalProfileImg');
+                    if (globalImg) globalImg.src = userPic.startsWith('http') ? userPic : '../image/uploads/' + userPic;
+                }
+            }
         });
 
         function renderProducts(products) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = ''; // Bersihkan loading text
-            
+
             products.forEach(p => {
                 const cat = (p.nama_kategori || '').toLowerCase();
                 const card = document.createElement('div');
@@ -173,7 +214,7 @@
                 card.dataset.sales = p.terjual || 0;
                 card.dataset.date = p.tanggal_ditambahkan || '';
                 card.dataset.name = p.nama_produk;
-                
+
                 // Asumsi goToDetail mengarah ke halaman detail
                 card.onclick = () => window.location.href = 'detail_produk.html?id=' + p.id_produk;
 
@@ -219,7 +260,7 @@
             const searchQ = (document.getElementById('navSearch').value || '').toLowerCase().trim();
 
             // Update checkbox color
-            ['crunchy','chewy','original'].forEach(cat => {
+            ['crunchy', 'chewy', 'original'].forEach(cat => {
                 const cb = document.getElementById('cb-' + cat);
                 const span = document.getElementById('text-' + cat);
                 if (cb && cb.checked) span.classList.add('active-category');
@@ -270,4 +311,5 @@
         }
     </script>
 </body>
+
 </html>

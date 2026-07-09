@@ -1,380 +1,684 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harmoni - Dashboard Pembeli</title>
     <link rel="stylesheet" href="../css/dashboard.css">
     <style>
-        .order-status { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .status-pending    { background: #fef3c7; color: #d97706; }
-        .status-proses     { background: #dbeafe; color: #2563eb; }
-        .status-dikirim    { background: #e0e7ff; color: #7c3aed; }
-        .status-selesai    { background: #dcfce7; color: #16a34a; }
-        .status-dibatalkan { background: #fee2e2; color: #dc2626; }
-        .profile-card { background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; padding: 28px; display: flex; align-items: center; gap: 20px; }
-        .avatar-big { width: 72px; height: 72px; border-radius: 50%; background: #facc15; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 28px; color: #111827; flex-shrink: 0; }
-        .profile-info h2 { font-size: 20px; font-weight: 800; color: #111827; }
-        .profile-info p  { font-size: 13px; color: #64748b; margin-top: 4px; }
-        .profile-badge { display: inline-block; margin-top: 8px; padding: 3px 10px; background: #fef9c3; color: #ca8a04; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .wishlist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-        .wishlist-card { background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; cursor: pointer; transition: box-shadow 0.2s; }
-        .wishlist-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.10); }
-        .wishlist-img { width: 100%; height: 90px; object-fit: cover; background: #f1f5f9; display:flex; align-items:center; justify-content:center; font-size:30px; }
-        .wishlist-info { padding: 10px; }
-        .wishlist-info .wname { font-size: 13px; font-weight: 700; color: #111827; }
-        .wishlist-info .wprice { font-size: 12px; color: #ca8a04; font-weight: 700; margin-top: 2px; }
-        .point-badge { background: linear-gradient(135deg, #facc15, #f59e0b); border-radius: 14px; padding: 20px 24px; color: #111827; }
-        .point-badge h3 { font-size: 28px; font-weight: 900; }
-        .point-badge p  { font-size: 13px; opacity: .8; }
-        .address-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px; margin-bottom:10px; }
-        .address-card .addr-name { font-weight:700; font-size:13px; color:#111827; }
-        .address-card .addr-text { font-size:12px; color:#64748b; margin-top:4px; }
-        .addr-main-tag { display:inline-block; margin-left:8px; padding:2px 7px; background:#dcfce7; color:#16a34a; border-radius:10px; font-size:10px; font-weight:700; }
-        .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-        .section-header h3 { font-size:16px; font-weight:800; color:#0f172a; }
-        .section-header a { font-size:12px; color:#ca8a04; font-weight:600; text-decoration:none; }
-        .table-card { background:#fff; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden; }
-        .table-card table { width:100%; border-collapse:collapse; }
-        .table-card th { background:#f8fafc; padding:12px 16px; text-align:left; font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.5px; }
-        .table-card td { padding:14px 16px; border-top:1px solid #f1f5f9; font-size:13px; color:#374151; }
-        .btn-sm { padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none; }
-        .btn-yellow { background:#facc15; color:#111827; }
-        .btn-outline-sm { background:#fff; color:#374151; border:1px solid #e2e8f0; }
-        .page { display: none; }
-        .page.active { display: block; }
-        .topbar-user { display:flex; align-items:center; gap:8px; cursor:pointer; }
-        .topbar-user img { width:32px; height:32px; border-radius:50%; object-fit:cover; }
-        .dropdown-user { position:relative; }
-        .dropdown-user-menu { display:none; position:absolute; right:0; top:110%; background:#fff; border:1px solid #e5e7eb; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.12); min-width:160px; z-index:100; overflow:hidden; }
-        .dropdown-user-menu a { display:block; padding:10px 16px; color:#374151; text-decoration:none; font-size:.875rem; }
-        .dropdown-user-menu a:hover { background:#f9fafb; }
-        .dropdown-user-menu a.logout { color:#e53e3e; border-top:1px solid #f3f4f6; }
-        .dropdown-user:hover .dropdown-user-menu { display:block; }
-    </style>
-</head>
-<body>
-<div class="admin-layout">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
-            <h2>HARMONI</h2>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-item active" onclick="setPage('beranda', this)">🏠 Beranda</a></li>
-            <li><a href="#" class="menu-item" onclick="setPage('pesanan', this)">📦 Pesanan Saya</a></li>
-            <li><a href="#" class="menu-item" onclick="setPage('wishlist', this)">❤️ Wishlist</a></li>
-            <li><a href="#" class="menu-item" onclick="setPage('alamat', this)">📍 Alamat Saya</a></li>
-            <li><a href="#" class="menu-item" onclick="setPage('profil', this)">👤 Profil & Akun</a></li>
-            <li><a href="../Main/homepage.html" class="menu-item">🛍️ Lanjut Belanja</a></li>
-        </ul>
-        <div style="margin-top:auto; padding:16px 24px 24px;">
-            <a href="../index.html" style="display:block; padding:10px; text-align:center; background:#fee2e2; color:#dc2626; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none;" onclick="logout()">🚪 Keluar</a>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <!-- TOPBAR -->
-        <div class="topbar">
-            <span class="page-title" id="pageTitle">Beranda</span>
-            <div class="topbar-right">
-                <div class="search-bar">
-                    <input type="search" placeholder="Cari pesanan atau produk...">
-                </div>
-                <span class="notif-bell">🔔 <span class="notif-dot"></span></span>
-                <div class="dropdown-user">
-                    <div class="topbar-user">
-                        <img src="../image/profile.png" alt="profil">
-                        <span id="userNameTopbar" style="font-size:13px; font-weight:600; color:#374151;"></span>
-                    </div>
-                    <div class="dropdown-user-menu">
-                        <a href="#" onclick="setPage('profil', null); return false;">👤 Profil Saya</a>
-                        <a href="../Main/homepage.html">🛍️ Belanja</a>
-                        <a href="../index.html" class="logout" onclick="logout()">🚪 Keluar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONTENT BODY -->
-        <div class="content-body">
-
-            <!-- PAGE: BERANDA -->
-            <div id="page-beranda" class="page active">
-                <!-- Profile Card -->
-                <div class="profile-card" style="margin-bottom:20px;">
-                    <div class="avatar-big" id="avatarBig">B</div>
-                    <div class="profile-info">
-                        <h2 id="profileName">Nama Pengguna</h2>
-                        <p id="profileEmail">email@example.com</p>
-                        <span class="profile-badge">⭐ Member Aktif</span>
-                    </div>
-                    <div style="margin-left:auto; text-align:right;">
-                        <div class="point-badge">
-                            <p style="font-size:11px; opacity:.8;">Poin Harmoni</p>
-                            <h3>1.250</h3>
-                            <p style="font-size:11px; opacity:.7; margin-top:2px;">pts</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Summary Cards -->
-                <div class="summary-grid" style="margin-bottom:20px;">
-                    <div class="summary-card">
-                        <div class="card-title">Total Pesanan</div>
-                        <h3 id="summTotalOrders">0</h3>
-                        <span class="trend positive">↑ Semua waktu</span>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-title">Menunggu Pembayaran</div>
-                        <h3 id="summPending">0</h3>
-                        <span class="trend" style="color:#d97706;">perlu aksi</span>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-title">Selesai</div>
-                        <h3 id="summCompleted">0</h3>
-                        <span class="trend positive">✓ lunas</span>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-title">Total Belanja</div>
-                        <h3 style="font-size:20px;" id="summTotalSpent">Rp 0</h3>
-                        <span class="trend positive">↑ Semua waktu</span>
-                    </div>
-                </div>
-
-                <!-- Recent Orders -->
-                <div class="section-header">
-                    <h3>📦 Pesanan Terakhir</h3>
-                    <a href="#" onclick="setPage('pesanan', null); return false;">Lihat Semua →</a>
-                </div>
-                <div class="table-card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No. Pesanan</th>
-                                <th>Produk</th>
-                                <th>Tanggal</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentOrdersBody">
-                            <tr><td colspan="6" style="text-align:center;">Memuat pesanan...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- PAGE: PESANAN -->
-            <div id="page-pesanan" class="page">
-                <div class="section-header">
-                    <h3>📦 Semua Pesanan</h3>
-                    <div style="display:flex; gap:8px;">
-                        <select style="border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; font-size:12px; outline:none;">
-                            <option>Semua Status</option>
-                            <option>Pending</option>
-                            <option>Dikirim</option>
-                            <option>Selesai</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="table-card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No. Pesanan</th>
-                                <th>Produk</th>
-                                <th>Tanggal</th>
-                                <th>Total</th>
-                                <th>Metode Bayar</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allOrdersBody">
-                            <tr><td colspan="7" style="text-align:center;">Memuat pesanan...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- PAGE: WISHLIST -->
-            <div id="page-wishlist" class="page">
-                <div class="section-header">
-                    <h3>❤️ Wishlist Saya</h3>
-                    <span style="font-size:13px; color:#64748b;">5 produk</span>
-                </div>
-                <div class="wishlist-grid">
-                    <div class="wishlist-card" onclick="window.location.href='../Main/detail_produk.html'">
-                        <div class="wishlist-img" style="background:#fef9c3;">🍞</div>
-                        <div class="wishlist-info">
-                            <div class="wname">Prol Tape Harmoni</div>
-                            <div class="wprice">Rp 25.000</div>
-                        </div>
-                    </div>
-                    <div class="wishlist-card">
-                        <div class="wishlist-img" style="background:#f0fdf4;">🥜</div>
-                        <div class="wishlist-info">
-                            <div class="wname">Edamame Premium</div>
-                            <div class="wprice">Rp 45.000</div>
-                        </div>
-                    </div>
-                    <div class="wishlist-card">
-                        <div class="wishlist-img" style="background:#fff7ed;">🍪</div>
-                        <div class="wishlist-info">
-                            <div class="wname">Pia Tape Klasik</div>
-                            <div class="wprice">Rp 27.000</div>
-                        </div>
-                    </div>
-                    <div class="wishlist-card">
-                        <div class="wishlist-img" style="background:#fef2f2;">🥔</div>
-                        <div class="wishlist-info">
-                            <div class="wname">Keripik Tempe Renyah</div>
-                            <div class="wprice">Rp 15.000</div>
-                        </div>
-                    </div>
-                    <div class="wishlist-card">
-                        <div class="wishlist-img" style="background:#f0fdf4;">🍈</div>
-                        <div class="wishlist-info">
-                            <div class="wname">Carang Mas Spesial</div>
-                            <div class="wprice">Rp 187.000</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: ALAMAT -->
-            <div id="page-alamat" class="page">
-                <div class="section-header">
-                    <h3>📍 Alamat Pengiriman</h3>
-                    <button class="btn-sm btn-yellow" onclick="alert('Form tambah alamat')">+ Tambah Alamat</button>
-                </div>
-                <div class="address-card">
-                    <div class="addr-name">Rumah Utama <span class="addr-main-tag">Utama</span></div>
-                    <div class="addr-text" id="mainAddressText">Jl. Kaliurang No. 12, Kel. Sumbersari, Kec. Sumbersari, Jember, Jawa Timur, 68121</div>
-                    <div style="margin-top:10px; display:flex; gap:8px;">
-                        <button class="btn-sm btn-outline-sm" onclick="editAddress()">✏️ Edit</button>
-                        <button class="btn-sm btn-outline-sm" style="color:#dc2626;">🗑️ Hapus</button>
-                    </div>
-                </div>
-                <div class="address-card">
-                    <div class="addr-name">Kantor</div>
-                    <div class="addr-text">Gedung Siola Lt. 3, Jl. Tunjungan No. 1, Surabaya, Jawa Timur, 60275</div>
-                    <div style="margin-top:10px; display:flex; gap:8px;">
-                        <button class="btn-sm btn-outline-sm">✏️ Edit</button>
-                        <button class="btn-sm btn-outline-sm" style="color:#dc2626;">🗑️ Hapus</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: PROFIL -->
-            <div id="page-profil" class="page">
-                <div class="section-header">
-                    <h3>👤 Profil & Akun</h3>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-                    <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:24px;">
-                        <h4 style="font-size:14px; font-weight:700; margin-bottom:16px; color:#0f172a;">Informasi Pribadi</h4>
-                        <div style="display:flex; flex-direction:column; gap:12px;">
-                            <div>
-                                <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">NAMA LENGKAP</label>
-                                <input id="editName" type="text" value="Budi Santoso" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">EMAIL</label>
-                                <input type="email" value="budi.s@gmail.com" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">NO. TELEPON</label>
-                                <input type="tel" value="08123456789" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                            </div>
-                            <div>
-                                <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">TANGGAL LAHIR</label>
-                                <input type="date" value="1995-06-15" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                            </div>
-                            <button class="btn-sm btn-yellow" style="width:100%; padding:10px;" onclick="alert('Profil berhasil disimpan!')">Simpan Perubahan</button>
-                        </div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:16px;">
-                        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:24px;">
-                            <h4 style="font-size:14px; font-weight:700; margin-bottom:16px; color:#0f172a;">Keamanan Akun</h4>
-                            <div style="display:flex; flex-direction:column; gap:10px;">
-                                <div>
-                                    <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">PASSWORD BARU</label>
-                                    <input type="password" placeholder="Masukkan password baru" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                                </div>
-                                <div>
-                                    <label style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">KONFIRMASI PASSWORD</label>
-                                    <input type="password" placeholder="Ulangi password baru" style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
-                                </div>
-                                <button class="btn-sm btn-outline-sm" style="width:100%; padding:10px;" onclick="alert('Password berhasil diubah!')">Ganti Password</button>
-                            </div>
-                        </div>
-                        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:20px;">
-                            <h4 style="font-size:14px; font-weight:700; margin-bottom:8px; color:#92400e;">🏆 Program Loyalitas</h4>
-                            <p style="font-size:13px; color:#78350f;">Poin Anda: <strong>1.250 pts</strong></p>
-                            <p style="font-size:12px; color:#92400e; margin-top:4px;">Tukarkan poin untuk diskon belanja!</p>
-                            <button class="btn-sm" style="margin-top:12px; background:#f59e0b; color:#fff;" onclick="alert('Fitur tukar poin segera hadir!')">Tukar Poin</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div><!-- end content-body -->
-    </div><!-- end main-content -->
-</div>
-
-<script>
-    const role = sessionStorage.getItem('harmoni_role');
-    const user = sessionStorage.getItem('harmoni_user');
-    const idPelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
-
-    if (!role || role === 'admin' || !idPelanggan) {
-        window.location.href = '../index.html';
-    }
-
-    function getStatusClass(status) {
-        status = status.toLowerCase();
-        if (status.includes('selesai')) return 'status-selesai';
-        if (status.includes('kirim')) return 'status-dikirim';
-        if (status.includes('batal')) return 'status-dibatalkan';
-        if (status.includes('tunggu')) return 'status-pending';
-        return 'status-proses';
-    }
-
-    function renderOrders(orders) {
-        const recentBody = document.getElementById('recentOrdersBody');
-        const allBody = document.getElementById('allOrdersBody');
-        recentBody.innerHTML = '';
-        allBody.innerHTML = '';
-
-        if (!orders || orders.length === 0) {
-            recentBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada pesanan</td></tr>';
-            allBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Belum ada pesanan</td></tr>';
-            return;
+        .order-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        let pending = 0;
-        let completed = 0;
-        let totalSpent = 0;
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
 
-        orders.forEach((o, index) => {
-            const productNames = o.details.map(d => d.nama_produk + ' × ' + d.kuantitas).join('<br>');
-            const statusClass = getStatusClass(o.status_pesanan);
-            const statusLabel = `<span class="order-status ${statusClass}">${o.status_pesanan}</span>`;
-            const dateStr = new Date(o.tanggal_pesanan).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
-            const totalStr = 'Rp ' + parseFloat(o.total_harga).toLocaleString('id-ID');
+        .status-proses {
+            background: #dbeafe;
+            color: #2563eb;
+        }
 
-            if (o.status_pesanan.toLowerCase().includes('selesai')) completed++;
-            if (o.status_pesanan.toLowerCase().includes('tunggu')) pending++;
-            if (!o.status_pesanan.toLowerCase().includes('batal')) totalSpent += parseFloat(o.total_harga);
+        .status-dikirim {
+            background: #e0e7ff;
+            color: #7c3aed;
+        }
 
-            // Recent Orders (Max 3)
-            if (index < 3) {
-                recentBody.innerHTML += `
+        .status-selesai {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-dibatalkan {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar-big {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #facc15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 28px;
+            color: #111827;
+            flex-shrink: 0;
+        }
+
+        .profile-info h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 3px 10px;
+            background: #fef9c3;
+            color: #ca8a04;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .wishlist-card {
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .wishlist-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .10);
+        }
+
+        .wishlist-img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .wishlist-info {
+            padding: 10px;
+        }
+
+        .wishlist-info .wname {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .wishlist-info .wprice {
+            font-size: 12px;
+            color: #ca8a04;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .point-badge {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            border-radius: 14px;
+            padding: 20px 24px;
+            color: #111827;
+        }
+
+        .point-badge h3 {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .point-badge p {
+            font-size: 13px;
+            opacity: .8;
+        }
+
+        .address-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+
+        .address-card .addr-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: #111827;
+        }
+
+        .address-card .addr-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .addr-main-tag {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 7px;
+            background: #dcfce7;
+            color: #16a34a;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .section-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .section-header a {
+            font-size: 12px;
+            color: #ca8a04;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .table-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .table-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-card th {
+            background: #f8fafc;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .table-card td {
+            padding: 14px 16px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-yellow {
+            background: #facc15;
+            color: #111827;
+        }
+
+        .btn-outline-sm {
+            background: #fff;
+            color: #374151;
+            border: 1px solid #e2e8f0;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .topbar-user img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .dropdown-user {
+            position: relative;
+        }
+
+        .dropdown-user-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+            min-width: 160px;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .dropdown-user-menu a {
+            display: block;
+            padding: 10px 16px;
+            color: #374151;
+            text-decoration: none;
+            font-size: .875rem;
+        }
+
+        .dropdown-user-menu a:hover {
+            background: #f9fafb;
+        }
+
+        .dropdown-user-menu a.logout {
+            color: #e53e3e;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .dropdown-user:hover .dropdown-user-menu {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../image/Logo no BG 1.png" alt="Logo Harmoni" class="logo-img">
+                <h2>HARMONI</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active" onclick="setPage('beranda', this)">🏠 Beranda</a></li>
+                <li><a href="#" class="menu-item" onclick="setPage('pesanan', this)">📦 Pesanan Saya</a></li>
+                <li><a href="#" class="menu-item" onclick="setPage('wishlist', this)">❤️ Wishlist</a></li>
+                <li><a href="#" class="menu-item" onclick="setPage('alamat', this)">📍 Alamat Saya</a></li>
+                <li><a href="#" class="menu-item" onclick="setPage('profil', this)">👤 Profil & Akun</a></li>
+                <li><a href="../Main/homepage.html" class="menu-item">🛍️ Lanjut Belanja</a></li>
+            </ul>
+            <div style="margin-top:auto; padding:16px 24px 24px;">
+                <a href="../index.html"
+                    style="display:block; padding:10px; text-align:center; background:#fee2e2; color:#dc2626; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none;"
+                    onclick="logout()">🚪 Keluar</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <span class="page-title" id="pageTitle">Beranda</span>
+                <div class="topbar-right">
+                    <div class="search-bar">
+                        <input type="search" placeholder="Cari pesanan atau produk...">
+                    </div>
+                    <span class="notif-bell">🔔 <span class="notif-dot"></span></span>
+                    <div class="dropdown-user" style="cursor:pointer;" onclick="setPage('profil', null)">
+                        <div class="topbar-user">
+                            <img src="../image/profile.png" alt="profil" id="globalProfileImg">
+                            <span id="userNameTopbar" style="font-size:13px; font-weight:600; color:#374151;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENT BODY -->
+            <div class="content-body">
+
+                <!-- PAGE: BERANDA -->
+                <div id="page-beranda" class="page active">
+                    <!-- Profile Card -->
+                    <div class="profile-card" style="margin-bottom:20px;">
+                        <div class="avatar-big" id="avatarBig">B</div>
+                        <div class="profile-info">
+                            <h2 id="profileName">Nama Pengguna</h2>
+                            <p id="profileEmail">email@example.com</p>
+                            <span class="profile-badge">⭐ Member Aktif</span>
+                        </div>
+                        <div style="margin-left:auto; text-align:right;">
+                            <div class="point-badge">
+                                <p style="font-size:11px; opacity:.8;">Poin Harmoni</p>
+                                <h3>1.250</h3>
+                                <p style="font-size:11px; opacity:.7; margin-top:2px;">pts</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="summary-grid" style="margin-bottom:20px;">
+                        <div class="summary-card">
+                            <div class="card-title">Total Pesanan</div>
+                            <h3 id="summTotalOrders">0</h3>
+                            <span class="trend positive">↑ Semua waktu</span>
+                        </div>
+                        <div class="summary-card">
+                            <div class="card-title">Menunggu Pembayaran</div>
+                            <h3 id="summPending">0</h3>
+                            <span class="trend" style="color:#d97706;">perlu aksi</span>
+                        </div>
+                        <div class="summary-card">
+                            <div class="card-title">Selesai</div>
+                            <h3 id="summCompleted">0</h3>
+                            <span class="trend positive">✓ lunas</span>
+                        </div>
+                        <div class="summary-card">
+                            <div class="card-title">Total Belanja</div>
+                            <h3 style="font-size:20px;" id="summTotalSpent">Rp 0</h3>
+                            <span class="trend positive">↑ Semua waktu</span>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders -->
+                    <div class="section-header">
+                        <h3>📦 Pesanan Terakhir</h3>
+                        <a href="#" onclick="setPage('pesanan', null); return false;">Lihat Semua →</a>
+                    </div>
+                    <div class="table-card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No. Pesanan</th>
+                                    <th>Produk</th>
+                                    <th>Tanggal</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center;">Memuat pesanan...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PAGE: PESANAN -->
+                <div id="page-pesanan" class="page">
+                    <div class="section-header">
+                        <h3>📦 Semua Pesanan</h3>
+                        <div style="display:flex; gap:8px;">
+                            <select
+                                style="border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; font-size:12px; outline:none;">
+                                <option>Semua Status</option>
+                                <option>Pending</option>
+                                <option>Dikirim</option>
+                                <option>Selesai</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No. Pesanan</th>
+                                    <th>Produk</th>
+                                    <th>Tanggal</th>
+                                    <th>Total</th>
+                                    <th>Metode Bayar</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allOrdersBody">
+                                <tr>
+                                    <td colspan="7" style="text-align:center;">Memuat pesanan...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PAGE: WISHLIST -->
+                <div id="page-wishlist" class="page">
+                    <div class="section-header">
+                        <h3>❤️ Wishlist Saya</h3>
+                        <span style="font-size:13px; color:#64748b;">5 produk</span>
+                    </div>
+                    <div class="wishlist-grid">
+                        <div class="wishlist-card" onclick="window.location.href='../Main/detail_produk.html'">
+                            <div class="wishlist-img" style="background:#fef9c3;">🍞</div>
+                            <div class="wishlist-info">
+                                <div class="wname">Prol Tape Harmoni</div>
+                                <div class="wprice">Rp 25.000</div>
+                            </div>
+                        </div>
+                        <div class="wishlist-card">
+                            <div class="wishlist-img" style="background:#f0fdf4;">🥜</div>
+                            <div class="wishlist-info">
+                                <div class="wname">Edamame Premium</div>
+                                <div class="wprice">Rp 45.000</div>
+                            </div>
+                        </div>
+                        <div class="wishlist-card">
+                            <div class="wishlist-img" style="background:#fff7ed;">🍪</div>
+                            <div class="wishlist-info">
+                                <div class="wname">Pia Tape Klasik</div>
+                                <div class="wprice">Rp 27.000</div>
+                            </div>
+                        </div>
+                        <div class="wishlist-card">
+                            <div class="wishlist-img" style="background:#fef2f2;">🥔</div>
+                            <div class="wishlist-info">
+                                <div class="wname">Keripik Tempe Renyah</div>
+                                <div class="wprice">Rp 15.000</div>
+                            </div>
+                        </div>
+                        <div class="wishlist-card">
+                            <div class="wishlist-img" style="background:#f0fdf4;">🍈</div>
+                            <div class="wishlist-info">
+                                <div class="wname">Carang Mas Spesial</div>
+                                <div class="wprice">Rp 187.000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: ALAMAT -->
+                <div id="page-alamat" class="page">
+                    <div class="section-header">
+                        <h3>📍 Alamat Pengiriman</h3>
+                        <button class="btn-sm btn-yellow" onclick="alert('Form tambah alamat')">+ Tambah Alamat</button>
+                    </div>
+                    <div class="address-card">
+                        <div class="addr-name">Rumah Utama <span class="addr-main-tag">Utama</span></div>
+                        <div class="addr-text" id="mainAddressText">Jl. Kaliurang No. 12, Kel. Sumbersari, Kec.
+                            Sumbersari, Jember, Jawa Timur, 68121</div>
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <button class="btn-sm btn-outline-sm" onclick="editAddress()">✏️ Edit</button>
+                            <button class="btn-sm btn-outline-sm" style="color:#dc2626;">🗑️ Hapus</button>
+                        </div>
+                    </div>
+                    <div class="address-card">
+                        <div class="addr-name">Kantor</div>
+                        <div class="addr-text">Gedung Siola Lt. 3, Jl. Tunjungan No. 1, Surabaya, Jawa Timur, 60275
+                        </div>
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <button class="btn-sm btn-outline-sm">✏️ Edit</button>
+                            <button class="btn-sm btn-outline-sm" style="color:#dc2626;">🗑️ Hapus</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: PROFIL -->
+                <div id="page-profil" class="page">
+                    <div class="section-header">
+                        <h3>👤 Profil & Akun</h3>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:24px;">
+                            <h4 style="font-size:14px; font-weight:700; margin-bottom:16px; color:#0f172a;">Informasi
+                                Pribadi</h4>
+                            <div style="display:flex; flex-direction:column; gap:12px;">
+                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                                    <img src="../image/profile.png" alt="profil" id="profilPreview"
+                                        style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:1px solid #e2e8f0;">
+                                    <div>
+                                        <label for="fotoProfil" class="btn-sm btn-outline-sm"
+                                            style="cursor:pointer; display:inline-block;">Ubah Foto</label>
+                                        <input type="file" id="fotoProfil" accept="image/*" style="display:none;"
+                                            onchange="uploadFotoProfil(this)">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">NAMA
+                                        LENGKAP</label>
+                                    <input id="editName" type="text"
+                                        style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">EMAIL</label>
+                                    <input id="editEmail" type="email"
+                                        style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">NO.
+                                        TELEPON</label>
+                                    <input id="editPhone" type="tel"
+                                        style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">ALAMAT
+                                        UTAMA</label>
+                                    <textarea id="editAddress"
+                                        style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none; resize:vertical; min-height:80px;"></textarea>
+                                </div>
+                                <button class="btn-sm btn-yellow" style="width:100%; padding:10px;"
+                                    onclick="simpanProfil()">Simpan Perubahan</button>
+                                <button class="btn-sm"
+                                    style="width:100%; padding:10px; margin-top:8px; background:#fee2e2; color:#dc2626; border:none; font-weight:700;"
+                                    onclick="logout()">🚪 Log Out</button>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:16px;">
+                            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:24px;">
+                                <h4 style="font-size:14px; font-weight:700; margin-bottom:16px; color:#0f172a;">Keamanan
+                                    Akun</h4>
+                                <div style="display:flex; flex-direction:column; gap:10px;">
+                                    <div>
+                                        <label
+                                            style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">PASSWORD
+                                            BARU</label>
+                                        <input type="password" placeholder="Masukkan password baru"
+                                            style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
+                                    </div>
+                                    <div>
+                                        <label
+                                            style="font-size:11px; font-weight:700; color:#64748b; letter-spacing:.5px;">KONFIRMASI
+                                            PASSWORD</label>
+                                        <input type="password" placeholder="Ulangi password baru"
+                                            style="display:block; margin-top:4px; width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:6px; font-size:13px; outline:none;">
+                                    </div>
+                                    <button class="btn-sm btn-outline-sm" style="width:100%; padding:10px;"
+                                        onclick="alert('Password berhasil diubah!')">Ganti Password</button>
+                                </div>
+                            </div>
+                            <div
+                                style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:20px;">
+                                <h4 style="font-size:14px; font-weight:700; margin-bottom:8px; color:#92400e;">🏆
+                                    Program Loyalitas</h4>
+                                <p style="font-size:13px; color:#78350f;">Poin Anda: <strong>1.250 pts</strong></p>
+                                <p style="font-size:12px; color:#92400e; margin-top:4px;">Tukarkan poin untuk diskon
+                                    belanja!</p>
+                                <button class="btn-sm" style="margin-top:12px; background:#f59e0b; color:#fff;"
+                                    onclick="alert('Fitur tukar poin segera hadir!')">Tukar Poin</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end content-body -->
+        </div><!-- end main-content -->
+    </div>
+
+    <script>
+        const role = sessionStorage.getItem('harmoni_role');
+        const user = sessionStorage.getItem('harmoni_user');
+        const idPelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
+
+        if (!role || role === 'admin' || !idPelanggan) {
+            window.location.href = '../index.html';
+        }
+
+        function getStatusClass(status) {
+            status = status.toLowerCase();
+            if (status.includes('selesai')) return 'status-selesai';
+            if (status.includes('kirim')) return 'status-dikirim';
+            if (status.includes('batal')) return 'status-dibatalkan';
+            if (status.includes('tunggu')) return 'status-pending';
+            return 'status-proses';
+        }
+
+        function renderOrders(orders) {
+            const recentBody = document.getElementById('recentOrdersBody');
+            const allBody = document.getElementById('allOrdersBody');
+            recentBody.innerHTML = '';
+            allBody.innerHTML = '';
+
+            if (!orders || orders.length === 0) {
+                recentBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada pesanan</td></tr>';
+                allBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Belum ada pesanan</td></tr>';
+                return;
+            }
+
+            let pending = 0;
+            let completed = 0;
+            let totalSpent = 0;
+
+            orders.forEach((o, index) => {
+                const productNames = o.details.map(d => d.nama_produk + ' × ' + d.kuantitas).join('<br>');
+                const statusClass = getStatusClass(o.status_pesanan);
+                const statusLabel = `<span class="order-status ${statusClass}">${o.status_pesanan}</span>`;
+                const dateStr = new Date(o.tanggal_pesanan).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                const totalStr = 'Rp ' + parseFloat(o.total_harga).toLocaleString('id-ID');
+
+                if (o.status_pesanan.toLowerCase().includes('selesai')) completed++;
+                if (o.status_pesanan.toLowerCase().includes('tunggu')) pending++;
+                if (!o.status_pesanan.toLowerCase().includes('batal')) totalSpent += parseFloat(o.total_harga);
+
+                // Recent Orders (Max 3)
+                if (index < 3) {
+                    recentBody.innerHTML += `
                     <tr>
                         <td><strong>#HRM-${o.id_pesanan.toString().padStart(4, '0')}</strong></td>
                         <td>${productNames}</td>
@@ -384,10 +688,10 @@
                         <td><button class="btn-sm btn-outline-sm">Detail</button></td>
                     </tr>
                 `;
-            }
+                }
 
-            // All Orders
-            allBody.innerHTML += `
+                // All Orders
+                allBody.innerHTML += `
                 <tr>
                     <td><strong>#HRM-${o.id_pesanan.toString().padStart(4, '0')}</strong></td>
                     <td>${productNames}</td>
@@ -398,57 +702,149 @@
                     <td><button class="btn-sm btn-outline-sm">Detail</button></td>
                 </tr>
             `;
+            });
+
+            document.getElementById('summTotalOrders').textContent = orders.length;
+            document.getElementById('summPending').textContent = pending;
+            document.getElementById('summCompleted').textContent = completed;
+            document.getElementById('summTotalSpent').textContent = 'Rp ' + totalSpent.toLocaleString('id-ID');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = user || 'Pengguna';
+            document.getElementById('userNameTopbar').textContent = name;
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileEmail').textContent = name + '@example.com';
+            const initials = name.slice(0, 2).toUpperCase();
+            document.getElementById('avatarBig').textContent = initials;
+
+            // Auto-navigate to tab based on URL param
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tab') === 'profil') {
+                setPage('profil', document.querySelector('.menu-item[onclick*="profil"]'));
+            }
+
+            // Fetch Profil
+            fetch(`../get_profil.php`, {
+                method: 'POST',
+                body: JSON.stringify({ id_pelanggan: idPelanggan }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        const p = res.data;
+                        document.getElementById('editName').value = p.username || '';
+                        document.getElementById('editEmail').value = p.email || '';
+                        document.getElementById('editPhone').value = p.no_telepon || '';
+                        document.getElementById('editAddress').value = p.alamat_utama || '';
+
+                        document.getElementById('profileName').textContent = p.username || '';
+                        document.getElementById('profileEmail').textContent = p.email || '';
+                        document.getElementById('userNameTopbar').textContent = p.username || '';
+                        sessionStorage.setItem('harmoni_user', p.username);
+
+                        if (p.foto_profil) {
+                            const picUrl = p.foto_profil.startsWith('http') ? p.foto_profil : '../image/uploads/' + p.foto_profil;
+                            document.getElementById('globalProfileImg').src = picUrl;
+                            document.getElementById('profilPreview').src = picUrl;
+                            sessionStorage.setItem('harmoni_foto_profil', p.foto_profil);
+                        }
+                    }
+                });
+
+            // Fetch Orders
+            fetch(`../get_pesanan_user.php?id_pelanggan=${idPelanggan}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.error) {
+                        renderOrders(data);
+                    } else {
+                        console.error("Error API:", data.error);
+                    }
+                })
+                .catch(err => console.error("Fetch Error:", err));
         });
 
-        document.getElementById('summTotalOrders').textContent = orders.length;
-        document.getElementById('summPending').textContent = pending;
-        document.getElementById('summCompleted').textContent = completed;
-        document.getElementById('summTotalSpent').textContent = 'Rp ' + totalSpent.toLocaleString('id-ID');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const name = user || 'Pengguna';
-        document.getElementById('userNameTopbar').textContent = name;
-        document.getElementById('profileName').textContent   = name;
-        document.getElementById('profileEmail').textContent  = name + '@example.com';
-        const initials = name.slice(0,2).toUpperCase();
-        document.getElementById('avatarBig').textContent = initials;
-
-        // Fetch Orders
-        fetch(`../get_pesanan_user.php?id_pelanggan=${idPelanggan}`)
-            .then(res => res.json())
-            .then(data => {
-                if (!data.error) {
-                    renderOrders(data);
-                } else {
-                    console.error("Error API:", data.error);
-                }
+        function simpanProfil() {
+            const data = {
+                id_pelanggan: idPelanggan,
+                username: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                no_telepon: document.getElementById('editPhone').value,
+                alamat_utama: document.getElementById('editAddress').value
+            };
+            fetch(`../update_profil.php`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
             })
-            .catch(err => console.error("Fetch Error:", err));
-    });
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        alert('Profil berhasil disimpan!');
+                        document.getElementById('profileName').textContent = data.username;
+                        document.getElementById('profileEmail').textContent = data.email;
+                        document.getElementById('userNameTopbar').textContent = data.username;
+                        sessionStorage.setItem('harmoni_user', data.username);
+                    } else {
+                        alert('Gagal: ' + res.error);
+                    }
+                });
+        }
 
-    function setPage(pageName, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-' + pageName).classList.add('active');
+        function uploadFotoProfil(input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
 
-        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-        if (el) el.classList.add('active');
+            const formData = new FormData();
+            formData.append('id_pelanggan', idPelanggan);
+            formData.append('foto_profil', file);
 
-        const titles = { beranda:'Beranda', pesanan:'Pesanan Saya', wishlist:'Wishlist', alamat:'Alamat Saya', profil:'Profil & Akun' };
-        document.getElementById('pageTitle').textContent = titles[pageName] || 'Dashboard';
-        return false;
-    }
+            fetch('../upload_profil.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        const picUrl = res.foto_profil.startsWith('http') ? res.foto_profil : '../image/uploads/' + res.foto_profil + '?t=' + new Date().getTime();
+                        document.getElementById('globalProfileImg').src = picUrl;
+                        document.getElementById('profilPreview').src = picUrl;
+                        sessionStorage.setItem('harmoni_foto_profil', res.foto_profil);
+                    } else {
+                        alert('Gagal unggah foto: ' + res.error);
+                    }
+                })
+                .catch(err => {
+                    alert('Terjadi kesalahan unggah foto.');
+                    console.error(err);
+                });
+        }
 
-    function logout() {
-        sessionStorage.clear();
-        window.location.href = '../index.html';
-    }
+        function setPage(pageName, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageName).classList.add('active');
 
-    function editAddress() {
-        const addr = document.getElementById('mainAddressText');
-        const newAddr = prompt('Edit alamat:', addr.textContent);
-        if (newAddr) addr.textContent = newAddr;
-    }
-</script>
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const titles = { beranda: 'Beranda', pesanan: 'Pesanan Saya', wishlist: 'Wishlist', alamat: 'Alamat Saya', profil: 'Profil & Akun' };
+            document.getElementById('pageTitle').textContent = titles[pageName] || 'Dashboard';
+            return false;
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        }
+
+        function editAddress() {
+            const addr = document.getElementById('mainAddressText');
+            const newAddr = prompt('Edit alamat:', addr.textContent);
+            if (newAddr) addr.textContent = newAddr;
+        }
+    </script>
 </body>
+
 </html>

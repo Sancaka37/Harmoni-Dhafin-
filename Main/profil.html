@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmoni - Profil Saya</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 6%;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: inherit;
+            text-decoration: none;
+            font-weight: 900;
+        }
+
+        .brand img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a {
+            color: #374151;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: #ca8a04;
+        }
+
+        .page {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            padding: 34px 6% 60px;
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .page-head h1 {
+            font-size: 30px;
+        }
+
+        .page-head p {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px;
+            border-radius: 14px;
+            background: #111827;
+            color: #fff;
+            margin-bottom: 22px;
+        }
+
+        .avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #facc15;
+            color: #111827;
+            font-size: 26px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .summary p {
+            color: #cbd5e1;
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(250, 204, 21, .16);
+            color: #fde68a;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .04);
+        }
+
+        .panel+.panel {
+            margin-top: 20px;
+        }
+
+        .panel h3 {
+            font-size: 17px;
+            margin-bottom: 16px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            margin-top: 6px;
+            padding: 11px 12px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        textarea {
+            min-height: 92px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, .18);
+        }
+
+        .wide {
+            grid-column: 1 / -1;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        button,
+        .button-link {
+            border: none;
+            border-radius: 999px;
+            padding: 11px 18px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .primary {
+            background: #facc15;
+            color: #111827;
+        }
+
+        .secondary {
+            background: #fff;
+            border: 1px solid #dbe3ef;
+            color: #374151;
+        }
+
+        .danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .info-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-item {
+            border: 1px solid #eef2f7;
+            border-radius: 10px;
+            padding: 14px;
+            background: #fbfdff;
+        }
+
+        .info-item span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: #111827;
+            color: #fff;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease;
+            z-index: 40;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 760px) {
+
+            .navbar,
+            .page-head,
+            .summary {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a class="brand" href="homepage.html">
+            <img src="../image/Logo no BG 1.png" alt="Logo Harmoni">
+            <span>HARMONI</span>
+        </a>
+        <div class="nav-links">
+            <a href="homepage.html">Beranda</a>
+            <a href="katalog.html">Katalog</a>
+            <a href="dashboard_user.html">Pesanan Saya</a>
+            <a href="keranjang.html">Keranjang</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <div class="page-head">
+            <div>
+                <h1>Profil Saya</h1>
+                <p>Kelola data akun dasar untuk kebutuhan demo pembeli Harmoni.</p>
+            </div>
+            <a class="button-link secondary" href="dashboard_user.html">Lihat Pesanan</a>
+        </div>
+
+        <section class="summary">
+            <div class="avatar" id="avatar">P</div>
+            <div>
+                <h2 id="summaryName">Pengguna Harmoni</h2>
+                <p id="summaryEmail">pengguna@example.com</p>
+                <span class="badge">Member Pembeli</span>
+            </div>
+        </section>
+
+        <div class="grid">
+            <section class="panel">
+                <h3>Informasi Akun</h3>
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <label>Nama Lengkap <input id="fullName" type="text" autocomplete="name" required></label>
+                        <label>Email <input id="email" type="email" autocomplete="email" required></label>
+                        <label>Nomor Telepon <input id="phone" type="tel" autocomplete="tel"
+                                placeholder="08xx xxxx xxxx"></label>
+                        <label>Kota <input id="city" type="text" placeholder="Jember"></label>
+                        <label class="wide">Alamat Utama <textarea id="address"
+                                placeholder="Tulis alamat pengiriman utama"></textarea></label>
+                    </div>
+                    <div class="btn-row">
+                        <button class="primary" type="submit">Simpan Profil</button>
+                        <button class="secondary" type="button" onclick="resetDemoProfile()">Reset Demo</button>
+                    </div>
+                </form>
+            </section>
+
+            <aside>
+                <section class="panel">
+                    <h3>Ringkasan Demo</h3>
+                    <div class="info-list">
+                        <div class="info-item"><span>Status akun</span><strong>Aktif</strong></div>
+                        <div class="info-item"><span>Role</span><strong id="roleText">Pembeli</strong></div>
+                        <div class="info-item"><span>Total keranjang</span><strong id="cartCount">0 produk</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <h3>Aksi Akun</h3>
+                    <div class="btn-row">
+                        <a class="button-link secondary" href="dashboard_user.html">Buka Dashboard</a>
+                        <button class="danger" type="button" onclick="logout()">Keluar</button>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const profileKey = 'harmoni_profile_demo';
+        const savedProfile = JSON.parse(sessionStorage.getItem(profileKey) || 'null');
+        const loginName = sessionStorage.getItem('harmoni_user') || 'Pengguna Harmoni';
+        const loginRole = sessionStorage.getItem('harmoni_role') || 'pembeli';
+        const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
+        const defaultProfile = {
+            name: loginName,
+            email: loginName.toLowerCase().replace(/\s+/g, '.') + '@example.com',
+            phone: '',
+            city: 'Jember',
+            address: ''
+        };
+
+        function fillProfile(profile) {
+            document.getElementById('fullName').value = profile.name || '';
+            document.getElementById('email').value = profile.email || '';
+            document.getElementById('phone').value = profile.phone || '';
+            document.getElementById('city').value = profile.city || '';
+            document.getElementById('address').value = profile.address || '';
+            document.getElementById('summaryName').textContent = profile.name || 'Pengguna Harmoni';
+            document.getElementById('summaryEmail').textContent = profile.email || 'pengguna@example.com';
+            document.getElementById('avatar').textContent = (profile.name || 'P').slice(0, 2).toUpperCase();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 2300);
+        }
+
+        function resetDemoProfile() {
+            sessionStorage.removeItem(profileKey);
+            fillProfile(defaultProfile);
+            showToast('Profil demo dikembalikan.');
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        }
+
+        document.getElementById('roleText').textContent = loginRole === 'admin' ? 'Admin' : 'Pembeli';
+        document.getElementById('cartCount').textContent = cart.length + ' produk';
+        fillProfile(savedProfile || defaultProfile);
+
+        document.getElementById('profileForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const profile = {
+                name: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                city: document.getElementById('city').value.trim(),
+                address: document.getElementById('address').value.trim()
+            };
+            sessionStorage.setItem(profileKey, JSON.stringify(profile));
+            sessionStorage.setItem('harmoni_user', profile.name);
+            fillProfile(profile);
+            showToast('Profil demo berhasil disimpan.');
+        });
+    </script>
+</body>
+
+</html>

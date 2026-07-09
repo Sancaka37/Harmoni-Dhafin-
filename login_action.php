@@ -30,7 +30,8 @@ if (!empty($data->email) && !empty($data->password)) {
                     "id_pelanggan" => $row['id_pelanggan'],
                     "username" => $row['username'],
                     "email" => $row['email'],
-                    "role" => $role
+                    "role" => $role,
+                    "foto_profil" => $row['foto_profil'] ?? 'profile.png'
                 ]
             ]);
         } else {

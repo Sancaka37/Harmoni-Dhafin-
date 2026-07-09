@@ -18,8 +18,8 @@
         </div>
         <div class="nav-actions">
             <button class="btn-cart" onclick="window.location.href='keranjang.html'">🛒 Keranjang (<span id="cartCount">0</span>)</button>
-            <div class="profile-avatar" style="cursor:pointer;" onclick="window.location.href='homepage.html'">
-                <img src="../image/profile.png" alt="profil">
+            <div class="profile-avatar" style="cursor:pointer;" onclick="window.location.href='../Main/dashboard_user.html?tab=profil'">
+                <img src="../image/profile.png" alt="profil" class="profil" id="globalProfileImg">
             </div>
         </div>
     </nav>
@@ -173,6 +173,31 @@
 
             const cart = JSON.parse(sessionStorage.getItem('harmoni_cart') || '[]');
             document.getElementById('cartCount').textContent = cart.length;
+
+            const idPelanggan = sessionStorage.getItem('harmoni_id_pelanggan');
+            if (idPelanggan) {
+                fetch('../get_profil.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ id_pelanggan: idPelanggan }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.success && res.data.foto_profil && res.data.foto_profil !== 'profile.png') {
+                        const pic = res.data.foto_profil;
+                        const globalImg = document.getElementById('globalProfileImg');
+                        if (globalImg) globalImg.src = pic.startsWith('http') ? pic : '../image/uploads/' + pic;
+                        sessionStorage.setItem('harmoni_foto_profil', pic);
+                    }
+                })
+                .catch(err => console.error(err));
+            } else {
+                const userPic = sessionStorage.getItem('harmoni_foto_profil');
+                if (userPic && userPic !== 'profile.png') {
+                    const globalImg = document.getElementById('globalProfileImg');
+                    if (globalImg) globalImg.src = userPic.startsWith('http') ? userPic : '../image/uploads/' + userPic;
+                }
+            }
         });
 
         function renderProduct(p) {
