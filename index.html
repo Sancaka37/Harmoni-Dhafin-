@@ -161,7 +161,7 @@
                         window.location.href = 'Main/homepage.html';
                     }
                 } else {
-                    alert.textContent = res.body.message || "Email atau password salah.";
+                    alert.textContent = res.body.message || res.body.error || "Email atau password salah.";
                     alert.classList.add('visible');
                     btn.textContent = 'Sign In';
                     btn.classList.remove('loading');

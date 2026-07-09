@@ -15,7 +15,7 @@ try {
         $pass = $dbopts["pass"];
         $dbname = ltrim($dbopts["path"], '/');
         
-        $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
+        $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require", $user, $pass);
     } else {
         // Mode Lokal (MySQL fallback)
         $host = "127.0.0.1";
