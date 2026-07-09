@@ -1,281 +1,225 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Harmoni — Web Admin</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HARMONI - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .error-msg {
+      color: #e53e3e;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    .input-group input.invalid {
+      border-color: #e53e3e;
+      background: #fff5f5;
+    }
+
+    .login-alert {
+      background: #fff5f5;
+      border: 1px solid #e53e3e;
+      border-radius: 8px;
+      color: #c53030;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .login-alert.visible {
+      display: block;
+    }
+
+    .btn-primary.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 11.2c0-.7.36-1.35.95-1.74l5.9-3.92a2.1 2.1 0 0 1 2.3 0l5.9 3.92c.59.39.95 1.04.95 1.74V19a2 2 0 0 1-2 2h-3.6a.9.9 0 0 1-.9-.9v-3.6a1.5 1.5 0 0 0-3 0v3.6a.9.9 0 0 1-.9.9H6a2 2 0 0 1-2-2v-7.8z" fill="currentColor"/></svg>
+  <div class="container">
+    <div class="header-logo">
+      <h1>HARMONI</h1>
+      <p>Pusat Oleh-oleh Jember</p>
+    </div>
+
+    <div class="login-card">
+      <h2>Selamat datang</h2>
+      <p class="subtitle">Silahkan masuk akun anda</p>
+
+      <div class="login-alert" id="loginAlert">Email atau password salah.</div>
+
+      <form id="loginForm" onsubmit="return false;">
+        <div class="input-group">
+          <label for="email">EMAIL ADDRESS</label>
+          <input type="email" id="email" placeholder="Masukkan email anda" autocomplete="email">
+          <span class="error-msg" id="emailError">Masukkan email yang valid.</span>
         </div>
-        <div>
-          <strong>HARMONI</strong>
-          <span>Pusat Oleh-oleh</span>
+
+        <div class="input-group">
+          <div class="password-header">
+            <label for="password">PASSWORD</label>
+            <p>Lupa Password? <a href="#" class="forgot-password" onclick="showForgotToast(); return false;">Klik
+                disini</a></p>
+          </div>
+          <input type="password" id="password" placeholder="Masukkan password anda" autocomplete="current-password">
+          <span class="error-msg" id="passwordError">Password tidak boleh kosong.</span>
         </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn" onclick="handleLogin()">Sign In</button>
+      </form>
+
+      <div class="divider">
+        <span>ATAU MASUK MENGGUNAKAN</span>
       </div>
 
-      <nav class="menu" aria-label="Navigasi admin">
-        <button class="menu-item active" data-page="dashboard">
-          <span class="icon">▦</span><span>Dashboard</span>
-        </button>
-        <button class="menu-item" data-page="orders">
-          <span class="icon">🛒</span><span>Orders</span>
-        </button>
-        <button class="menu-item" data-page="products">
-          <span class="icon">▣</span><span>Products</span>
-        </button>
-        <button class="menu-item" data-page="customers">
-          <span class="icon">♙</span><span>Customers</span>
-        </button>
-      </nav>
+      <div class="button-group">
+        <button type="button" class="btn-secondary" onclick="showComingSoon()">Nomor Telepon</button>
+        <button type="button" class="btn-secondary" onclick="showComingSoon()">Akun Google</button>
+      </div>
+    </div>
 
-      <button class="export-btn" id="exportReport">⇩ Export Reports</button>
-    </aside>
+    <div class="register-link">
+      <p>Belum punya akun?</p>
+      <a href="register.html" class="buat-akun">Buat Akun</a>
+    </div>
 
-    <div class="main-wrap">
-      <header class="topbar">
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Buka menu">☰</button>
-        <div class="global-search">
-          <span>⌕</span>
-          <input id="globalSearch" type="search" placeholder="Search orders, customers, or items..." />
-        </div>
-        <div class="top-actions">
-          <button class="icon-btn" title="Notifikasi">♧</button>
-          <button class="icon-btn" title="Pengaturan">⚙</button>
-          <div class="profile-wrap" style="position:relative; display:flex; align-items:center; gap:8px;">
-            <div class="profile" title="Admin Harmoni" id="profileBtn" style="cursor:pointer;">A</div>
-            <div id="adminDropdown" style="display:none; position:absolute; right:0; top:110%; background:#fff; border:1px solid #e5e7eb; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.12); min-width:180px; z-index:100; overflow:hidden;">
-              <div style="padding:12px 16px; border-bottom:1px solid #f3f4f6; font-size:.85rem; color:#6b7280;">
-                Admin Harmoni
-              </div>
-              <a href="#" style="display:block; padding:10px 16px; color:#374151; font-size:.85rem; text-decoration:none;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">⚙️ Pengaturan</a>
-              <a href="../index.html" style="display:block; padding:10px 16px; color:#e53e3e; font-size:.85rem; text-decoration:none; border-top:1px solid #f3f4f6;" onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background=''" onclick="sessionStorage.removeItem('harmoni_role'); sessionStorage.removeItem('harmoni_user');">🚪 Keluar</a>
-            </div>
-          </div>
-        </div>
-      </header>
-      <script>
-        document.getElementById('profileBtn').addEventListener('click', function(e) {
-          e.stopPropagation();
-          const dd = document.getElementById('adminDropdown');
-          dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-        });
-        document.addEventListener('click', () => {
-          const dd = document.getElementById('adminDropdown');
-          if (dd) dd.style.display = 'none';
-        });
-      </script>
-
-      <main class="content">
-        <section class="page active" id="page-dashboard" aria-labelledby="dashboard-title">
-          <div class="page-head dashboard-head">
-            <div>
-              <h1 id="dashboard-title">Overview</h1>
-              <p>ANALYTICS</p>
-            </div>
-            <button class="date-chip" id="headerDate">▣ 1–31 Oktober 2026</button>
-          </div>
-
-          <div class="stats-grid">
-            <article class="stat-card highlight">
-              <div class="stat-icon">▣</div>
-              <span>Pendapatan Bulan Ini</span>
-              <strong id="statRevenueMonth">Rp 0</strong>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                 <small id="statRevenueGrowth" class="positive">↗ +0% vs Bulan lalu</small>
-                 <small id="statRevenueAllTime" style="color:#6b7280; font-weight:500;">Total: Rp 0</small>
-              </div>
-            </article>
-            <article class="stat-card">
-              <div class="stat-icon ghost">▱</div>
-              <span>Total Pesanan</span>
-              <strong>128</strong>
-              <small class="positive">↗ +5.2%</small>
-            </article>
-            <article class="stat-card">
-              <div class="stat-icon ghost">♙</div>
-              <span>Pelanggan Aktif</span>
-              <strong>550</strong>
-              <small>→ Pertumbuhan stabil</small>
-            </article>
-          </div>
-
-          <div class="dashboard-grid">
-            <article class="panel chart-panel">
-              <div class="panel-title-row">
-                <h2>Pertumbuhan Penjualan</h2>
-                <select class="select-clean" id="chartRange">
-                  <option value="year">This Year</option>
-                  <option value="month">This Month</option>
-                </select>
-              </div>
-              <div class="chart" aria-label="Grafik pertumbuhan penjualan">
-                <svg viewBox="0 0 720 260" role="img">
-                  <defs>
-                    <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stop-color="#f7d500" stop-opacity=".25"/>
-                      <stop offset="100%" stop-color="#f7d500" stop-opacity="0"/>
-                    </linearGradient>
-                  </defs>
-                  <g class="grid-lines">
-                    <line x1="44" y1="40" x2="690" y2="40" />
-                    <line x1="44" y1="90" x2="690" y2="90" />
-                    <line x1="44" y1="140" x2="690" y2="140" />
-                    <line x1="44" y1="190" x2="690" y2="190" />
-                  </g>
-                  <path id="chartArea" class="chart-area" d="" />
-                  <path id="chartLine" class="chart-line" d="" />
-                  <g id="chartDots" class="chart-dots"></g>
-                  <g id="chartLabels" class="chart-labels"></g>
-                </svg>
-              </div>
-            </article>
-
-            <article class="panel best-panel">
-              <h2>Pilihan Terbaik</h2>
-              <div class="best-list" id="bestProducts"></div>
-              <button class="link-card" data-page-target="products">Lihat Semua Produk</button>
-            </article>
-          </div>
-
-          <article class="panel recent-panel">
-            <div class="panel-title-row">
-              <h2>Pesanan Terbaru</h2>
-              <button class="icon-btn filter-toggle" title="Filter">≡</button>
-            </div>
-            <div class="table-scroll">
-              <table class="data-table">
-                <thead>
-                  <tr><th>Order ID</th><th>Pelanggan</th><th>Tanggal</th><th>Status</th><th class="right">Total</th></tr>
-                </thead>
-                <tbody id="recentOrdersBody"></tbody>
-              </table>
-            </div>
-            <div class="center"><button class="secondary-btn" data-page-target="orders">Lihat Semua Pesanan</button></div>
-          </article>
-        </section>
-
-        <section class="page" id="page-orders" aria-labelledby="orders-title">
-          <div class="page-head split">
-            <div>
-              <h1 id="orders-title">Manajemen Pesanan</h1>
-              <p>Review, process, and track all artisanal commissions.</p>
-            </div>
-            <div class="head-actions">
-              <button class="secondary-btn" id="printShipping">☷ Cetak Surat</button>
-            </div>
-          </div>
-
-          <div class="filter-bar">
-            <div class="table-search"><span>⌕</span><input id="orderSearch" type="search" placeholder="Search by Order ID, Customer, or Item..." /></div>
-            <select id="dateFilter"><option>All Dates</option><option>Mei 2026</option><option>April 2026</option></select>
-            <select id="statusFilter"><option value="all">All Statuses</option><option value="Pending">Pending</option><option value="Processing">Processing</option><option value="Delivered">Delivered</option></select>
-            <select id="paymentFilter"><option>All Payments</option><option>Visa</option><option>Bank Transfer</option><option>Amex</option></select>
-          </div>
-
-          <div class="active-filters" id="activeFilters"></div>
-
-          <article class="panel table-panel">
-            <div class="table-scroll">
-              <table class="data-table selectable">
-                <thead>
-                  <tr><th><input type="checkbox" id="selectAllOrders" /></th><th>Order ID</th><th>Pelanggan</th><th>Tanggal</th><th>Pembayaran</th><th class="right">Total</th><th>Status</th><th class="right">Actions</th></tr>
-                </thead>
-                <tbody id="ordersTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-foot"><span id="orderCountText">Showing 1 to 3 of 142 results</span><div><button class="page-btn" disabled>Previous</button><button class="page-btn">Next</button></div></div>
-          </article>
-        </section>
-
-        <section class="page" id="page-products" aria-labelledby="products-title">
-          <div class="page-head split">
-            <div>
-              <h1 id="products-title">Stok Produk</h1>
-              <p>Manage your artisanal collection, stock levels, and categorization.</p>
-            </div>
-            <div class="head-actions tabs" id="productCategoryTabs">
-              <button class="tab active" data-product-filter="all">All</button>
-              <!-- Category tabs will be populated dynamically -->
-              <button class="primary-btn" data-modal="productModal">+ Tambah Produk</button>
-            </div>
-          </div>
-
-          <div class="cards-grid products-grid" id="productsGrid"></div>
-          <div class="center"><button class="secondary-btn" id="loadMoreProducts">Muat Lebih Banyak Produk⌄</button></div>
-        </section>
-
-        <section class="page" id="page-customers" aria-labelledby="customers-title">
-          <div class="page-head split">
-            <div>
-              <h1 id="customers-title">Daftar Pelanggan</h1>
-              <p>Manage and analyze your patron network.</p>
-            </div>
-            <div class="head-actions tabs customer-tools">
-              <div class="table-search customer-search"><span>⌕</span><input id="customerSearch" type="search" placeholder="Cari pelanggan..." /></div>
-              <button class="tab active" data-customer-filter="all">All</button>
-              <button class="tab" data-customer-filter="Perusahaan">Perusahaan</button>
-              <button class="tab" data-customer-filter="Individu">Individu</button>
-            </div>
-          </div>
-
-          <div class="cards-grid customers-grid" id="customersGrid"></div>
-          <div class="center"><button class="secondary-btn" id="loadMoreCustomers">Muat Lebih Banyak Pelanggan</button></div>
-        </section>
-      </main>
+    <div class="footer">
+      <div class="footer-links">
+        <a href="#">KEBIJAKAN PRIVASI</a>
+        <a href="#">KETENTUAN LAYANAN</a>
+      </div>
     </div>
   </div>
 
-  <div class="modal" id="productModal" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close-modal>×</button>
-      <h2>Tambah Produk</h2>
-      <p>Fitur penambahan produk sedang dalam pengembangan.</p>
-      <form id="productForm" class="form-grid" enctype="multipart/form-data">
-        <label>Nama Produk<input name="name" required placeholder="Contoh: Keripik Pisang" /></label>
-        <label>Kategori<select name="category" required><option value="">Pilih Kategori</option></select></label>
-        <label style="grid-column:1/-1">Deskripsi<textarea name="description" required placeholder="Deskripsi produk..." style="width:100%; height:60px; padding:8px; border:1px solid #e2e8f0; border-radius:8px;"></textarea></label>
-        <label>Harga (Rp)<input name="price" type="number" min="0" required placeholder="25000" /></label>
-        <label>Stok<input name="stock" type="number" min="0" required placeholder="25" /></label>
-        <label style="grid-column:1/-1">Gambar Produk<input type="file" name="image" accept="image/*" required style="width:100%; padding:8px; border:1px dashed #cbd5e1; border-radius:8px;" /></label>
-        <button class="primary-btn full" type="submit" style="grid-column:1/-1">Simpan Produk</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal" id="updateOrderModal" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close-modal>×</button>
-      <h2>Ubah Status Pesanan</h2>
-      <p>Perbarui status untuk pesanan <strong id="updateOrderIdDisplay"></strong>.</p>
-      <form id="updateOrderForm" class="form-grid">
-        <input type="hidden" name="id_pesanan" id="updateOrderId">
-        <label style="grid-column:1/-1">Status Pesanan
-          <select name="status" id="updateOrderStatus" required>
-            <option value="Pending">Pending</option>
-            <option value="Diproses">Diproses</option>
-            <option value="Dikirim">Dikirim</option>
-            <option value="Selesai">Selesai</option>
-            <option value="Dibatalkan">Dibatalkan</option>
-          </select>
-        </label>
-        <button class="primary-btn full" type="submit" style="grid-column:1/-1">Simpan Perubahan</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>
-  // Auth guard
-  if (sessionStorage.getItem("harmoni_role") !== "admin") {
-    window.location.href = "../index.html";
-  }
-</script>
-<script src="assets/js/app.js"></script>
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function setError(inputId, errorId, show) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      if (show) {
+        input.classList.add('invalid');
+        error.classList.add('visible');
+      } else {
+        input.classList.remove('invalid');
+        error.classList.remove('visible');
+      }
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const alert = document.getElementById('loginAlert');
+      const btn = document.getElementById('loginBtn');
+
+      // Reset states
+      alert.classList.remove('visible');
+      setError('email', 'emailError', false);
+      setError('password', 'passwordError', false);
+
+      let valid = true;
+
+      if (!email || !validateEmail(email)) {
+        setError('email', 'emailError', true);
+        valid = false;
+      }
+      if (!password) {
+        setError('password', 'passwordError', true);
+        valid = false;
+      }
+      if (!valid) return;
+
+      // Loading state
+      btn.textContent = 'Masuk...';
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      const data = {
+        email: email,
+        password: password
+      };
+
+      fetch('login_action.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(res => {
+          if (res.status === 200) {
+            const user = res.body.user;
+            sessionStorage.setItem('harmoni_role', user.role);
+            sessionStorage.setItem('harmoni_user', user.username);
+            sessionStorage.setItem('harmoni_id_pelanggan', user.id_pelanggan);
+
+            if (user.role === 'admin') {
+              window.location.href = 'admin/index.html';
+            } else {
+              window.location.href = 'Main/homepage.html';
+            }
+          } else {
+            alert.textContent = res.body.message || "Email atau password salah.";
+            alert.classList.add('visible');
+            btn.textContent = 'Sign In';
+            btn.classList.remove('loading');
+            btn.disabled = false;
+          }
+        })
+        .catch(error => {
+          alert.textContent = "Gagal menghubungi server.";
+          alert.classList.add('visible');
+          btn.textContent = 'Sign In';
+          btn.classList.remove('loading');
+          btn.disabled = false;
+        });
+    }
+
+    // Allow Enter key submission
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('password').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleLogin();
+      });
+      document.getElementById('email').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('password').focus();
+      });
+    });
+
+    function showForgotToast() {
+      showToast('Fitur reset password segera hadir!');
+    }
+
+    function showComingSoon() {
+      showToast('Fitur ini segera hadir!');
+    }
+
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast';
+        t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:.85rem;z-index:999;transition:opacity .3s';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity = '1';
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.style.opacity = '0', 2500);
+    }
+  </script>
 </body>
+
 </html>

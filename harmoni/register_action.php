@@ -28,7 +28,7 @@ if (!empty($data->fullname) && !empty($data->email) && !empty($data->password)) 
     $username = htmlspecialchars(strip_tags($data->fullname));
     $email = htmlspecialchars(strip_tags($data->email));
     $phone = isset($data->phone) ? htmlspecialchars(strip_tags($data->phone)) : '';
-    $role = isset($data->role) ? htmlspecialchars(strip_tags($data->role)) : 'pembeli';
+    $role = 'pembeli'; // Supaya yang bisa daftar di register cuma sebagai customer
     
     // Hash password
     $password_hash = password_hash($data->password, PASSWORD_BCRYPT);

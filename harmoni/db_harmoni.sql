@@ -16,7 +16,7 @@
 
 
 -- Dumping database structure for db_harmoni
-CREATE DATABASE IF NOT EXISTS `db_harmoni` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `db_harmoni` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_harmoni`;
 
 -- Dumping structure for table db_harmoni.detail_pesanan
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `detail_pesanan` (
   KEY `id_produk` (`id_produk`),
   CONSTRAINT `detail_pesanan_ibfk_1` FOREIGN KEY (`id_pesanan`) REFERENCES `pesanan` (`id_pesanan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `detail_pesanan_ibfk_2` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.detail_pesanan: ~0 rows (approximately)
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `kategori` (
   `nama_kategori` varchar(100) NOT NULL,
   `deskripsi_kategori` text,
   PRIMARY KEY (`id_kategori`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.kategori: ~0 rows (approximately)
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   `role` varchar(20) DEFAULT 'pembeli',
   PRIMARY KEY (`id_pelanggan`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.pelanggan: ~0 rows (approximately)
 
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   PRIMARY KEY (`id_pembayaran`),
   UNIQUE KEY `id_pesanan` (`id_pesanan`),
   CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`id_pesanan`) REFERENCES `pesanan` (`id_pesanan`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.pembayaran: ~0 rows (approximately)
 
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `pengiriman` (
   PRIMARY KEY (`id_pengiriman`),
   UNIQUE KEY `id_pesanan` (`id_pesanan`),
   CONSTRAINT `pengiriman_ibfk_1` FOREIGN KEY (`id_pesanan`) REFERENCES `pesanan` (`id_pesanan`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.pengiriman: ~0 rows (approximately)
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `pesanan` (
   PRIMARY KEY (`id_pesanan`),
   KEY `id_pelanggan` (`id_pelanggan`),
   CONSTRAINT `pesanan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.pesanan: ~0 rows (approximately)
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `produk` (
   PRIMARY KEY (`id_produk`),
   KEY `id_kategori` (`id_kategori`),
   CONSTRAINT `produk_ibfk_1` FOREIGN KEY (`id_kategori`) REFERENCES `kategori` (`id_kategori`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.produk: ~0 rows (approximately)
 
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `ulasan` (
   CONSTRAINT `ulasan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ulasan_ibfk_2` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ulasan_chk_1` CHECK (((`rating` >= 1) and (`rating` <= 5)))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table db_harmoni.ulasan: ~0 rows (approximately)
 
