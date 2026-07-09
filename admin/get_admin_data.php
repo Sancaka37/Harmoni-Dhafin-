@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// error_reporting(0);
 include '../koneksi.php';
 
 try {
@@ -37,9 +36,9 @@ try {
         WHERE status_pesanan != 'Dibatalkan'
     ");
     $revData = $stmtRev->fetch(PDO::FETCH_ASSOC);
-    $totalPendapatan = intval($revData['all_time']);
-    $thisMonthRevenue = intval($revData['this_month']);
-    $lastMonthRevenue = intval($revData['last_month']);
+    $totalPendapatan = intval($revData['all_time'] ?? 0);
+    $thisMonthRevenue = intval($revData['this_month'] ?? 0);
+    $lastMonthRevenue = intval($revData['last_month'] ?? 0);
     
     // 2. Products
     $stmtProd = $conn->query("SELECT p.id_produk as id, p.nama_produk as name, k.nama_kategori as category, p.harga as price, p.stok as stock, p.url_gambar as image, 
@@ -54,18 +53,18 @@ try {
         else if ($p['stock'] < 5) $status = 'low';
         
         // Correct image path for admin dashboard
-        $img = str_replace('../image', '../image', $p['image']); 
+        $img = str_replace('../image', '../image', $p['image'] ?? ''); 
         
         $products[] = [
             "id" => $p['id'],
             "name" => $p['name'],
             "category" => $p['category'] ? ucfirst($p['category']) : 'Umum',
             "sku" => 'HRM-' . str_pad($p['id'], 3, '0', STR_PAD_LEFT),
-            "price" => intval($p['price']),
-            "stock" => intval($p['stock']),
+            "price" => intval($p['price'] ?? 0),
+            "stock" => intval($p['stock'] ?? 0),
             "status" => $status,
             "image" => $img,
-            "terjual" => intval($p['terjual'])
+            "terjual" => intval($p['terjual'] ?? 0)
         ];
     }
     
@@ -107,11 +106,11 @@ try {
         
         $weeks = [0, 0, 0, 0];
         foreach ($db_chart as $row) {
-            $d = intval($row['d']);
-            if ($d <= 7) $weeks[0] += intval($row['total']);
-            else if ($d <= 14) $weeks[1] += intval($row['total']);
-            else if ($d <= 21) $weeks[2] += intval($row['total']);
-            else $weeks[3] += intval($row['total']);
+            $d = intval($row['d'] ?? 0);
+            if ($d <= 7) $weeks[0] += intval($row['total'] ?? 0);
+            else if ($d <= 14) $weeks[1] += intval($row['total'] ?? 0);
+            else if ($d <= 21) $weeks[2] += intval($row['total'] ?? 0);
+            else $weeks[3] += intval($row['total'] ?? 0);
         }
         
         $lastDay = date('t');
@@ -140,8 +139,8 @@ try {
             
             $total = 0;
             foreach ($db_chart as $row) {
-                if (intval($row['m']) == $m && intval($row['y']) == $y) {
-                    $total = intval($row['total']);
+                if (intval($row['m'] ?? 0) == $m && intval($row['y'] ?? 0) == $y) {
+                    $total = intval($row['total'] ?? 0);
                     break;
                 }
             }
